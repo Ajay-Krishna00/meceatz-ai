@@ -1,0 +1,20 @@
+﻿{
+  "name": "meceatz-ai-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MEC-Eatz AI: Autonomous Canteen Revenue Recovery & Merchant Copilot powered by Razorpay",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "groq-sdk": "^0.15.0",
+    "razorpay": "^2.9.5",
+    "uuid": "^11.1.0"
+  }
+}

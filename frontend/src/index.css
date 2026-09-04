@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Neo-Brutalist Comic Pop Design System inspired by onam-games.pages.dev */
+:root {
+  --ink: #18181b;
+  --ink-soft: #3f3f46;
+  --ink-w: 2.5px;
+  --ink-w-bold: 3.5px;
+  --paper: #fffdf7;
+  --paper-2: #fff8e7;
+  --paper-3: #fef0d2;
+  --pop-yellow: #ffd43b;
+  --pop-teal: #20c997;
+  --pop-teal-deep: #0ca678;
+  --pop-red: #ff6b6b;
+  --pop-purple: #845ef7;
+  --pop-blue: #339af0;
+  --pop-orange: #ff922b;
+  --font-display: 'Baloo 2', 'Nunito', cursive, sans-serif;
+  --font-body: 'Nunito', -apple-system, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.4;
+}
+
+/* Halftone Dot Grid Background */
+.halftone-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+  opacity: 0.06;
+  z-index: 0;
+}
+
+/* Neo-Brutalist Cards */
+.comic-card {
+  background: var(--paper);
+  border: var(--ink-w) solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0px var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.comic-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--ink);
+}
+
+.comic-card-solid {
+  background: var(--paper-2);
+  border: var(--ink-w) solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+/* Neo-Brutalist Buttons */
+.comic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 8px 18px;
+  border: var(--ink-w) solid var(--ink);
+  border-radius: 100px;
+  cursor: pointer;
+  background: var(--paper-2);
+  color: var(--ink);
+  box-shadow: 3px 3px 0px var(--ink);
+  transition: all 0.1s ease;
+  text-decoration: none;
+  user-select: none;
+}
+
+.comic-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--ink);
+}
+
+.comic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--ink);
+}
+
+.comic-btn-brand {
+  background: var(--pop-yellow);
+}
+
+.comic-btn-brand:hover {
+  background: #fcc419;
+}
+
+.comic-btn-teal {
+  background: var(--pop-teal);
+  color: #053b2d;
+}
+
+.comic-btn-red {
+  background: var(--pop-red);
+  color: #fff;
+}
+
+.comic-btn-purple {
+  background: var(--pop-purple);
+  color: #fff;
+}
+
+/* Stickers & Badges */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: var(--pop-yellow);
+  color: var(--ink);
+  box-shadow: 2px 2px 0px var(--ink);
+}
+
+.sticker-teal { background: var(--pop-teal); color: #053b2d; }
+.sticker-red { background: var(--pop-red); color: #fff; }
+.sticker-purple { background: var(--pop-purple); color: #fff; }
+
+.tilt-left { transform: rotate(-2deg); }
+.tilt-right { transform: rotate(2deg); }
+
+/* Comic Pill */
+.comic-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: var(--paper);
+  box-shadow: 2px 2px 0px var(--ink);
+}
+
+/* Tab buttons */
+.tab-btn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border: var(--ink-w) solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--ink);
+  transition: all 0.15s ease;
+}
+
+.tab-btn.active {
+  background: var(--pop-yellow);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+/* Wordmark style from onam-games */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 2px 2px 0px var(--pop-yellow), 3px 3px 0px var(--ink);
+}
+
+/* Animations */
+@keyframes wobble {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+.anim-wobble {
+  animation: wobble 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.06); }
+}
+
+.anim-pulse {
+  animation: pulseGlow 1.8s ease-in-out infinite;
+}
