@@ -211,14 +211,42 @@ export default function App() {
     <div className="min-h-screen flex flex-col relative">
       <div className="halftone-overlay" />
 
-      {/* Floating Action Toast Notification */}
+      {/* Floating Action Toast Notification - Guaranteed in-viewport positioning */}
       {toastMessage && (
-        <div className="fixed top-20 right-4 sm:right-8 z-50 comic-card p-4 bg-[var(--pop-yellow)] border-3 border-[var(--ink)] shadow-[5px_5px_0px_var(--ink)] max-w-sm animate-bounce">
-          <div className="flex items-center justify-between gap-2">
-            <h4 className="font-black text-sm text-[var(--ink)]">{toastMessage.title}</h4>
-            <button onClick={() => setToastMessage(null)} className="font-black text-xs">✕</button>
+        <div
+          id="recovery-toast"
+          className="toast-slide-in"
+          style={{
+            position: 'fixed',
+            top: '85px',
+            right: '24px',
+            zIndex: 99999,
+            maxWidth: '380px',
+            backgroundColor: '#ffd43b',
+            border: '3px solid #18181b',
+            borderRadius: '14px',
+            boxShadow: '5px 5px 0px #18181b',
+            padding: '14px 18px',
+          }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 font-black text-sm text-[var(--ink)]">
+                <span>⚡</span>
+                <span>{toastMessage.title}</span>
+              </div>
+              <p className="text-xs font-extrabold text-[var(--ink-soft)] mt-1 leading-snug">
+                {toastMessage.detail}
+              </p>
+            </div>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="w-6 h-6 rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] flex items-center justify-center font-black text-xs hover:bg-[var(--pop-red)] hover:text-white shrink-0"
+              title="Close notification"
+            >
+              ✕
+            </button>
           </div>
-          <p className="text-xs font-bold text-[var(--ink-soft)] mt-1">{toastMessage.detail}</p>
         </div>
       )}
 
