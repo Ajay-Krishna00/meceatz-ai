@@ -45,18 +45,13 @@ body {
 }
 
 /* Neo-Brutalist Cards */
+/* Neo-Brutalist Cards (Static & Non-lifting to avoid button confusion) */
 .comic-card {
   background: var(--paper);
   border: var(--ink-w) solid var(--ink);
   border-radius: 14px;
   box-shadow: 4px 4px 0px var(--ink);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
   position: relative;
-}
-
-.comic-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px var(--ink);
 }
 
 .comic-card-solid {
