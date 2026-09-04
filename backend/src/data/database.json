@@ -83,6 +83,58 @@
   ],
   "orders": [
     {
+      "id": "ord_drop_1788563767116",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "amount": 200,
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "status": "abandoned",
+      "dropReason": "UPI Screen Switched / Timeout",
+      "createdAt": "2026-09-04T23:16:07.116Z"
+    },
+    {
+      "id": "ord_drop_1788563700807",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "amount": 200,
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "status": "abandoned",
+      "dropReason": "Kitchen Rush Auto-Recovery",
+      "createdAt": "2026-09-04T23:15:00.808Z"
+    },
+    {
       "id": "ord_drop_1788563381393",
       "items": [
         {
@@ -373,6 +425,76 @@
     }
   ],
   "recoveryLogs": [
+    {
+      "id": "rec-1788563778720",
+      "timestamp": "2026-09-04T23:16:18.720Z",
+      "orderId": "ord_drop_1788563767116",
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 200,
+      "discountAmount": 20,
+      "recoveredAmount": 180,
+      "reasoning": "Customer abandoned a high-value cart (₹200) due to UPI timeout. Per policy, a cart value > ₹150 qualifies for a 5-10% discount; a 10% discount (₹20) is applied for maximum conversion. The UPI timeout specifically warrants a frictionless 1-click payment link. Despite the unusual early hour (4:46 AM), the 'Canteen Hours' context implies operational readiness, necessitating an immediate and strong recovery push.",
+      "headline": "Early Bird Shawarma & Coffee Recovery: UPI Timeout Discount",
+      "incentiveType": "discount",
+      "urgencyScore": 8,
+      "paymentLinkUrl": "https://rzp.io/rzp/4gThlGh",
+      "paymentLinkId": "plink_TY8bXZLtiqHNFm",
+      "whatsappMessage": "Hey Rahul! 👋 Your MEC-Eatz order for Shawarma & Cold Coffee almost made it! Looks like UPI timed out. No worries, we've got a ₹20 discount just for you! Grab your snack for just ₹180! Pay frictionlessly here: [payment_link] 🚀\n\n👉 Pay Now: https://rzp.io/rzp/4gThlGh\n*(Valid for 15 mins)*",
+      "status": "dispatched"
+    },
+    {
+      "id": "rec-1788563711657",
+      "timestamp": "2026-09-04T23:15:11.657Z",
+      "orderId": "ord_drop_1788563700807",
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 200,
+      "discountAmount": 15,
+      "recoveredAmount": 185,
+      "reasoning": "The cart value of ₹200 exceeds ₹150, making a direct discount (₹15 off, 7.5%) the most appealing and optimal incentive as per policy. The 'Kitchen Rush Auto-Recovery' reason suggests the student might have abandoned due to perceived delays; a discount encourages immediate re-order and overcomes this potential hurdle by offering clear value.",
+      "headline": "Exclusive Discount for Your MEC Cravings",
+      "incentiveType": "discount",
+      "urgencyScore": 7,
+      "paymentLinkUrl": "https://rzp.io/rzp/SVG2WQ3S",
+      "paymentLinkId": "plink_TY8aMMJSK6It0L",
+      "whatsappMessage": "Hey Rahul! 👋 Your MEC Shawarma & Coffee are calling! 🤩 We saw you almost had it. Get ₹15 OFF your order. Re-order now, beat any rush, and satisfy those cravings! Don't miss out! 🚀\n\n👉 Pay Now: https://rzp.io/rzp/SVG2WQ3S\n*(Valid for 15 mins)*",
+      "status": "dispatched"
+    },
     {
       "id": "rec-1788563392991",
       "timestamp": "2026-09-04T23:09:52.991Z",
@@ -738,6 +860,26 @@
   ],
   "webhooks": [
     {
+      "id": "wh-1788563778724",
+      "timestamp": "2026-09-04T23:16:18.724Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788563778720",
+        "amount": 180,
+        "paymentLinkId": "plink_TY8bXZLtiqHNFm"
+      }
+    },
+    {
+      "id": "wh-1788563711659",
+      "timestamp": "2026-09-04T23:15:11.659Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788563711657",
+        "amount": 185,
+        "paymentLinkId": "plink_TY8aMMJSK6It0L"
+      }
+    },
+    {
       "id": "wh-1788563392992",
       "timestamp": "2026-09-04T23:09:52.992Z",
       "event": "ai.recovery.dispatched",
@@ -869,10 +1011,10 @@
     }
   ],
   "analytics": {
-    "totalOrders": 12,
+    "totalOrders": 14,
     "recoveredOrders": 2,
     "recoveredRevenue": 400,
-    "abandonedRevenue": 1590,
-    "recoveryRate": 18.2
+    "abandonedRevenue": 1990,
+    "recoveryRate": 15.4
   }
 }
