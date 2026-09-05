@@ -1,3 +1,4 @@
+import { API_BASE } from "../config/api.js";
 import React, { useState } from 'react';
 import { Send, Bot, Sparkles, User, HelpCircle } from 'lucide-react';
 
@@ -26,7 +27,7 @@ export function CopilotChat({ onToolExecuted }) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/copilot/chat', {
+      const res = await fetch(`${API_BASE}/api/copilot/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: q })

@@ -1,3 +1,4 @@
+import { API_BASE } from "./config/api.js";
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar.jsx';
 import { MetricsBar } from './components/MetricsBar.jsx';
@@ -25,7 +26,7 @@ export default function App() {
 
   // Load Menu & Initial Analytics
   const fetchMenu = () => {
-    fetch('/api/menu')
+    fetch(`${API_BASE}/api/menu`)
       .then((r) => r.json())
       .then((d) => d.menu && setMenu(d.menu))
       .catch(console.error);
@@ -34,7 +35,7 @@ export default function App() {
   useEffect(() => {
     fetchMenu();
 
-    fetch('/api/config')
+    fetch(`${API_BASE}/api/config`)
       .then((r) => r.json())
       .then((d) => d.razorpayKeyId && setRazorpayKeyId(d.razorpayKeyId))
       .catch(console.error);
@@ -44,7 +45,7 @@ export default function App() {
   }, []);
 
   const fetchAnalytics = () => {
-    fetch('/api/analytics')
+    fetch(`${API_BASE}/api/analytics`)
       .then((r) => r.json())
       .then((d) => {
         if (d.analytics) setAnalytics(d.analytics);
@@ -54,7 +55,7 @@ export default function App() {
   };
 
   const fetchRecoveryLogs = () => {
-    fetch('/api/recovery/logs')
+    fetch(`${API_BASE}/api/recovery/logs`)
       .then((r) => r.json())
       .then((d) => {
         if (d.logs) setRecoveryLogs(d.logs);
@@ -99,7 +100,7 @@ export default function App() {
   // Real Razorpay Standard Modal Checkout
   const handleCheckout = async (customer) => {
     try {
-      const res = await fetch('/api/orders/create', {
+      const res = await fetch(`${API_BASE}/api/orders/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -124,7 +125,7 @@ export default function App() {
         image: '/logo.jpg',
         order_id: data.order.id,
         handler: async function (response) {
-          const verifyRes = await fetch('/api/orders/verify', {
+          const verifyRes = await fetch(`${API_BASE}/api/orders/verify`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -203,7 +204,7 @@ export default function App() {
   // Simulate Cart Abandonment / Drop -> Triggers Autonomous AI Agent
   const handleSimulateAbandon = async (options) => {
     try {
-      const res = await fetch('/api/recovery/abandon', {
+      const res = await fetch(`${API_BASE}/api/recovery/abandon`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -239,7 +240,7 @@ export default function App() {
   // Simulate Customer Paying the Recovered Link
   const handleResetDemo = async () => {
     try {
-      const res = await fetch('/api/recovery/reset', { method: 'POST' });
+      const res = await fetch(`${API_BASE}/api/recovery/reset`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         setRecoveryLogs(data.logs);
@@ -258,7 +259,7 @@ export default function App() {
 
   const handleLoadBenchmark = async () => {
     try {
-      const res = await fetch('/api/benchmark/seed-cohort', { method: 'POST' });
+      const res = await fetch(`${API_BASE}/api/benchmark/seed-cohort`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         fetchAnalytics();
@@ -276,7 +277,7 @@ export default function App() {
 
   const handleSimulateLinkPayment = async (recoveryId) => {
     try {
-      const res = await fetch('/api/recovery/simulate-pay', {
+      const res = await fetch(`${API_BASE}/api/recovery/simulate-pay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ recoveryId })
@@ -294,7 +295,7 @@ export default function App() {
   // Autonomous Batch Recovery for Canteen Rush Hours
   const handleBatchRecovery = async () => {
     try {
-      const res = await fetch('/api/recovery/batch', {
+      const res = await fetch(`${API_BASE}/api/recovery/batch`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
