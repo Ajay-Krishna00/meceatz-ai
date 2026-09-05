@@ -155,7 +155,41 @@ export default function App() {
       };
 
       if (window.Razorpay) {
-        const rzp = new window.Razorpay(options);
+        // Track whether payment succeeded to avoid false dismissal triggers
+        let paymentSucceeded = false;
+        const origHandler = options.handler;
+        options.handler = async function (response) {
+          paymentSucceeded = true;
+          await origHandler(response);
+        };
+
+        const rzp = new window.Razorpay({
+          ...options,
+          modal: {
+            ondismiss: function () {
+              // AUTONOMOUS RECOVERY: Student closed Razorpay modal without paying
+              if (!paymentSucceeded) {
+                console.log('Razorpay Checkout modal dismissed - autonomous recovery triggered');
+                handleSimulateAbandon({
+                  name: customer.name,
+                  contact: customer.contact,
+                  reason: 'Razorpay Checkout Modal Dismissed (Student closed without paying)'
+                });
+              }
+            }
+          }
+        });
+
+        // Catch explicit payment failures from Razorpay gateway
+        rzp.on('payment.failed', function (failResponse) {
+          console.log('Razorpay payment.failed event intercepted:', failResponse.error);
+          handleSimulateAbandon({
+            name: customer.name,
+            contact: customer.contact,
+            reason: 'Razorpay Payment Failed: ' + (failResponse.error?.description || failResponse.error?.reason || 'Gateway Error')
+          });
+        });
+
         rzp.open();
       } else {
         alert('Razorpay Checkout SDK is loading or unavailable. Using direct simulation.');

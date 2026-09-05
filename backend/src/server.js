@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/api.js";
+import { startAbandonmentWatcher } from "./services/abandonmentWatcher.js";
 
 dotenv.config();
 
@@ -40,4 +41,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log("⚡ MEC-Eatz AI Backend running on http://localhost:" + PORT);
   console.log("🤖 Razorpay AI Builder: Autonomous Revenue Recovery & Merchant Copilot");
+  startAbandonmentWatcher();
 });

@@ -19,6 +19,8 @@ export const geminiClient = geminiApiKey ? new GoogleGenerativeAI(geminiApiKey) 
  * Tries Gemini 2.5 Flash -> falls back to Groq -> falls back to structured JSON.
  */
 export async function generateAICompletion({ systemPrompt, userPrompt, temperature = 0.3 }) {
+  const startMs = Date.now();
+
   // 1. Primary: Gemini 2.5 Flash
   if (geminiClient) {
     try {
@@ -29,10 +31,14 @@ export async function generateAICompletion({ systemPrompt, userPrompt, temperatu
       const result = await model.generateContent(fullPrompt);
       const text = result.response.text();
       const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
-      }
-      return JSON.parse(text);
+      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+      parsed._aiMeta = {
+        aiModelUsed: "gemini-2.5-flash",
+        aiProvider: "Google DeepMind",
+        aiLatencyMs: Date.now() - startMs,
+        fallbackUsed: false
+      };
+      return parsed;
     } catch (err) {
       console.warn("Gemini inference failed, trying Groq:", err.message);
     }
@@ -52,10 +58,14 @@ export async function generateAICompletion({ systemPrompt, userPrompt, temperatu
       });
       const text = response.choices[0]?.message?.content || "{}";
       const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
-      }
-      return JSON.parse(text);
+      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+      parsed._aiMeta = {
+        aiModelUsed: "qwen/qwen3.8-27b",
+        aiProvider: "Groq Cloud",
+        aiLatencyMs: Date.now() - startMs,
+        fallbackUsed: true
+      };
+      return parsed;
     } catch (err) {
       console.warn("Groq inference failed:", err.message);
     }

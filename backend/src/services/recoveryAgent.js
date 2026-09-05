@@ -139,6 +139,7 @@ Current Time: ${new Date().toLocaleTimeString()} (College Canteen Hours)`;
     headline: finalHeadline,
     incentiveType,
     urgencyScore: decision?.urgencyScore || 85,
+    aiMeta: decision?._aiMeta || { aiModelUsed: "heuristic-fallback", aiProvider: "local", aiLatencyMs: 0, fallbackUsed: true },
     paymentLinkUrl: paymentUrl,
     paymentLinkId: paymentLink.id,
     upiIntentUri,

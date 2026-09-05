@@ -198,13 +198,13 @@ export function CartDrawer({
             {/* Simulated Drop Trigger */}
             <div className="pt-2 border-t border-[var(--ink)]/20 text-center">
               <span className="text-[11px] font-black uppercase text-[var(--ink-soft)] block mb-1.5">
-                ⚡ Hackathon Demo Simulation:
+                ⚡ Demo: Test Recovery Agent
               </span>
               <button
                 onClick={() => handleAbandonSim('UPI Screen Switched / Timeout')}
                 disabled={isProcessing}
                 className="w-full comic-btn comic-btn-purple py-2 text-xs font-black flex items-center justify-center gap-2"
-                title="Simulate user dropping payment to watch AI Agent take autonomous action"
+                title="Force a cart abandonment event. In production this fires automatically when students close the Razorpay modal."
               >
                 {isProcessing ? (
                   <>
@@ -214,7 +214,7 @@ export function CartDrawer({
                 ) : (
                   <>
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>Simulate Payment Failure & Trigger AI Recovery</span>
+                    <span>Demo: Force Cart Drop</span>
                   </>
                 )}
               </button>

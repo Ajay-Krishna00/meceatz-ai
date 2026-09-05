@@ -55,8 +55,6 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment, onResetDemo }
                 <h3 className="font-black text-xl" style={{ fontFamily: 'var(--font-display)' }}>
                   Autonomous Recovery Agent Feed
                 </h3>
-                <p className="text-xs font-extrabold text-[var(--ink-soft)] uppercase tracking-wide">
-                  Powered by Groq Llama-3.3 & Gemini · Real-time Razorpay Payment Links API</p>
               </div>
             </div>
 

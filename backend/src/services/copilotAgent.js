@@ -184,7 +184,8 @@ ${JSON.stringify(contextData, null, 2)}`;
         "Mark Shawarma as sold out",
         "Trigger batch recovery for all pending lunch orders"
       ],
-      sentiment: aiResponse.sentiment || "positive"
+      sentiment: aiResponse.sentiment || "positive",
+      aiMeta: aiResponse._aiMeta || null
     };
   }
 
@@ -198,7 +199,8 @@ ${JSON.stringify(contextData, null, 2)}`;
         "Trigger batch recovery for all pending lunch orders",
         "Run Financial & Anti-Gaming Audit"
       ],
-      sentiment: "positive"
+      sentiment: "positive",
+      aiMeta: aiResponse?._aiMeta || { aiModelUsed: "heuristic-intent-match", aiProvider: "local", aiLatencyMs: 0, fallbackUsed: true }
     };
   }
 

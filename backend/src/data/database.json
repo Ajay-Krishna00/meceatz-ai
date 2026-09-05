@@ -83,6 +83,43 @@
   ],
   "orders": [
     {
+      "id": "ord_drop_1788602772371",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 2
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        },
+        {
+          "id": "item-7",
+          "name": "South Indian Canteen Meals",
+          "category": "Main Course",
+          "price": 90,
+          "available": true,
+          "prepTime": "2 mins",
+          "tag": "Wholesome",
+          "description": "Steaming boiled rice, sambar, thoran, pulissery, pickle, and crisp papadam.",
+          "quantity": 1
+        }
+      ],
+      "amount": 420,
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "status": "abandoned",
+      "dropReason": "UPI Screen Switched / Timeout",
+      "createdAt": "2026-09-05T10:06:12.375Z"
+    },
+    {
       "id": "ord_178856001",
       "items": [
         {
@@ -128,6 +165,53 @@
     }
   ],
   "recoveryLogs": [
+    {
+      "id": "rec-1788602783729",
+      "timestamp": "2026-09-05T10:06:23.729Z",
+      "orderId": "ord_drop_1788602772371",
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456"
+      },
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 2
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        },
+        {
+          "id": "item-7",
+          "name": "South Indian Canteen Meals",
+          "category": "Main Course",
+          "price": 90,
+          "available": true,
+          "prepTime": "2 mins",
+          "tag": "Wholesome",
+          "description": "Steaming boiled rice, sambar, thoran, pulissery, pickle, and crisp papadam.",
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 420,
+      "discountAmount": 0,
+      "recoveredAmount": 420,
+      "reasoning": "Anti-Gaming Guardrail: Student already claimed a recovery perk in the last 12 hours. Cash discount restricted to prevent moral hazard; Priority Pickup token assigned. The total cart value of ₹420 clearly falls into the high-value category (>₹150), prompting the 'Fresh meal reserved in kitchen!' hook. The items (Shawarma, Meals) are substantial and would be prepared fresh. The 'priority_pickup' incentive is woven into the WhatsApp message to enhance conversion by offering quick pick-up, addressing the student's desire for convenience. The message is under 50 words, warm, uses emojis, and directly addresses the UPI payment failure, encouraging a quick resolution. Current time (3:36 PM) is still within active canteen hours, making immediate recovery highly relevant.",
+      "headline": "Fresh meal reserved in kitchen! Complete in 1-click",
+      "incentiveType": "priority_pickup",
+      "urgencyScore": 7,
+      "paymentLinkUrl": "https://rzp.io/rzp/LeZlvlok",
+      "paymentLinkId": "plink_TYJgEtRHh28OpC",
+      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=420&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20MEC%20Special%20Chicken&tr=plink_TYJgEtRHh28OpC",
+      "whatsappMessage": "Hey Rahul! 👋 Your MEC Shawarma, Meals & Coffee are waiting! Looks like your UPI hit a snag. No worries, we've reserved your fresh order! Finish your payment in 1-click & grab it from the express counter. Don't miss out! 🚀\n\n👉 Pay Now: https://rzp.io/rzp/LeZlvlok\n*(Valid for 20 mins · Razorpay UPI)*",
+      "status": "dispatched",
+      "antiGamingEnforced": true
+    },
     {
       "id": "rec-101",
       "timestamp": "2026-09-04T23:58:42.872Z",
@@ -191,6 +275,18 @@
   ],
   "webhooks": [
     {
+      "id": "wh-1788602783738",
+      "timestamp": "2026-09-05T10:06:23.738Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788602783729",
+        "amount": 420,
+        "paymentLinkId": "plink_TYJgEtRHh28OpC",
+        "discountApplied": 0,
+        "antiGamingPassed": false
+      }
+    },
+    {
       "id": "wh-101",
       "timestamp": "2026-09-05T00:02:42.872Z",
       "event": "payment_link.paid",
@@ -212,11 +308,11 @@
     }
   ],
   "analytics": {
-    "totalOrders": 32,
-    "recoveredOrders": 18,
-    "recoveredRevenue": 4250,
-    "abandonedRevenue": 5820,
-    "recoveryRate": 56.2
+    "totalOrders": 3,
+    "recoveredOrders": 1,
+    "recoveredRevenue": 200,
+    "abandonedRevenue": 580,
+    "recoveryRate": 33.3
   },
   "kitchen": {
     "activeRushHour": true,
