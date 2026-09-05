@@ -83,6 +83,32 @@
   ],
   "orders": [
     {
+      "id": "ord_drop_1788613145788",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "amount": 200,
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456",
+        "email": "rahul@mec.ac.in"
+      },
+      "status": "abandoned",
+      "dropReason": "UPI Payment Window Exited",
+      "createdAt": "2026-09-05T12:59:05.791Z"
+    },
+    {
       "id": "ord_bench_03",
       "items": [
         {
@@ -191,6 +217,48 @@
     }
   ],
   "recoveryLogs": [
+    {
+      "id": "rec-1788613145806",
+      "timestamp": "2026-09-05T12:59:12.454Z",
+      "orderId": "ord_drop_1788613145788",
+      "customer": {
+        "name": "Rahul Nair (EC 2026)",
+        "contact": "+919847123456"
+      },
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        },
+        {
+          "id": "item-5",
+          "name": "Cold Coffee & Choco Drizzle",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 200,
+      "discountAmount": 0,
+      "recoveredAmount": 200,
+      "reasoning": "Anti-Gaming Guardrail: Student already claimed a recovery perk in the last 12 hours. Cash discount restricted to prevent moral hazard; Priority Pickup token assigned. The total cart value of ₹200 is high (>₹150), triggering the 'Fresh meal reserved' hook. The items (Shawarma, Cold Coffee) are perishable, and the current time (6:29 PM) is prime for dinner/evening snacks, making recovery urgent. The WhatsApp message leverages the incentive (priority_pickup) as 'express counter pickup', is warm, concise (30 words), and uses emojis suitable for MEC students to encourage immediate payment completion.",
+      "headline": "Fresh meal reserved in kitchen! Complete in 1-click",
+      "incentiveType": "priority_pickup",
+      "urgencyScore": 9,
+      "antiGamingEnforced": true,
+      "aiMeta": {
+        "aiModelUsed": "gemini-2.5-flash",
+        "aiProvider": "Google DeepMind",
+        "aiLatencyMs": 5978,
+        "fallbackUsed": false
+      },
+      "paymentLinkUrl": "https://rzp.io/rzp/9SdHVBW",
+      "paymentLinkId": "plink_TYMcnPDA4qAI5T",
+      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=200&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20MEC%20Special%20Chicken&tr=plink_TYMcnPDA4qAI5T",
+      "whatsappMessage": "Hey Rahul! 👋 Your MEC Special Shawarma & Cold Coffee are reserved! 😋 Fresh meal waiting. Quick 1-click payment for express counter pickup. Don't miss out! 🔥\n\n👉 Pay Now: https://rzp.io/rzp/9SdHVBW\n*(Valid for 20 mins · Razorpay UPI)*",
+      "status": "dispatched"
+    },
     {
       "id": "rec-1788613027121",
       "timestamp": "2026-09-05T12:57:13.005Z",
@@ -368,6 +436,18 @@
   ],
   "webhooks": [
     {
+      "id": "wh-1788613152459",
+      "timestamp": "2026-09-05T12:59:12.459Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788613145806",
+        "amount": 200,
+        "paymentLinkId": "plink_TYMcnPDA4qAI5T",
+        "discountApplied": 0,
+        "antiGamingPassed": false
+      }
+    },
+    {
       "id": "wh-1788613033006",
       "timestamp": "2026-09-05T12:57:13.006Z",
       "event": "ai.recovery.dispatched",
@@ -425,11 +505,11 @@
     }
   ],
   "analytics": {
-    "totalOrders": 5,
+    "totalOrders": 6,
     "recoveredOrders": 1,
     "recoveredRevenue": 200,
-    "abandonedRevenue": 650,
-    "recoveryRate": 20
+    "abandonedRevenue": 850,
+    "recoveryRate": 16.7
   },
   "kitchen": {
     "activeRushHour": true,
