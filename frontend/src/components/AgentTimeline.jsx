@@ -71,7 +71,9 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment }) {
               {logs.map((log) => {
                 const isPaid = log.status === 'recovered';
                 const showQr = activeQrId === log.id;
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(log.paymentLinkUrl || 'https://razorpay.com')}`;
+                // Encode native UPI Intent URI for 1-click scanning in Google Pay / PhonePe / Paytm
+                const upiData = log.upiIntentUri || `upi://pay?pa=razorpay@icici&pn=MEC%20Canteen&am=${log.recoveredAmount}&cu=INR&tr=${log.id}`;
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(upiData)}`;
 
                 return (
                   <div
@@ -84,10 +86,15 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment }) {
                   >
                     {/* Status Banner */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className={`sticker ${isPaid ? 'sticker-teal' : 'sticker-purple'} text-[11px]`}>
                           {isPaid ? '✅ Recovered via Razorpay Link' : '⚡ AI Recovery Dispatched'}
                         </span>
+                        {log.antiGamingEnforced && (
+                          <span className="sticker sticker-purple text-[10px]" title="Anti-gaming guardrail active: Cash discount locked to prevent moral hazard">
+                            🛑 Anti-Gaming Cooldown
+                          </span>
+                        )}
                         <span className="text-xs font-mono font-bold text-[var(--ink-soft)]">
                           {new Date(log.timestamp).toLocaleTimeString()}
                         </span>
@@ -119,7 +126,7 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment }) {
                     <div className="comic-card-solid p-3 text-xs bg-[var(--paper-3)] space-y-1 mb-3">
                       <div className="flex items-center gap-1.5 font-black text-[var(--ink)]">
                         <Sparkles className="w-3.5 h-3.5 text-[var(--pop-purple)]" />
-                        <span>Autonomous AI Strategy:</span>
+                        <span>Autonomous AI Strategy & Financial Guardrails:</span>
                       </div>
                       <p className="font-bold text-[var(--ink-soft)] leading-relaxed">
                         {log.reasoning}
@@ -145,16 +152,16 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment }) {
                       <div className="comic-card-solid p-4 mb-3 bg-[var(--paper)] flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
                         <img
                           src={qrUrl}
-                          alt="Razorpay Payment QR"
+                          alt="Native Razorpay UPI Intent QR"
                           className="w-36 h-36 border-2 border-[var(--ink)] rounded-lg shadow-[2px_2px_0px_var(--ink)]"
                         />
                         <div className="space-y-1">
-                          <span className="sticker sticker-teal text-[10px]">Instant UPI QR</span>
+                          <span className="sticker sticker-teal text-[10px]">Native upi:// Intent QR</span>
                           <h5 className="font-black text-sm" style={{ fontFamily: 'var(--font-display)' }}>
-                            Scan to Pay ₹{log.recoveredAmount}
+                            Scan to Pay ₹{log.recoveredAmount} (Direct UPI App)
                           </h5>
                           <p className="text-xs font-bold text-[var(--ink-soft)] max-w-xs">
-                            Scan with GPay, PhonePe, or Paytm. Automatically captured by Razorpay webhook!
+                            Scannable with Google Pay, PhonePe, Paytm, or CRED. Triggers native UPI payment sheet without browser redirect.
                           </p>
                           <a
                             href={log.paymentLinkUrl}
@@ -162,7 +169,7 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment }) {
                             rel="noreferrer"
                             className="inline-flex items-center gap-1 text-xs font-black text-[var(--pop-teal-deep)] underline decoration-2 pt-1"
                           >
-                            <span>Open URL instead</span>
+                            <span>Open Web Payment Link instead</span>
                             <ArrowUpRight className="w-3 h-3" />
                           </a>
                         </div>

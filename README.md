@@ -61,29 +61,34 @@ During these rush hours:
 
 ### 1. Autonomous Revenue Recovery Agent (Razorpay Payment Links API)
 - Detects checkout drop-offs and uses **Google Gemini 2.5 Flash** with **Groq Llama-3.3** fallback to determine:
-  - **Churn Risk Score:** High / Medium / Low based on order composition and delay.
-  - **Dynamic Micro-Incentive:** Calculates optimal discount (₹10 - ₹25) or priority queue token.
-  - **Real Razorpay Payment Link Creation:** Integrates directly with Razorpay `/v1/payment_links` API with auto-calculated 30-minute expiry and merchant reference tracking.
+  - **Churn Risk Score:** High / Medium / Low based on order composition, basket value, and campus delay.
+  - **Deterministic Financial Guardrails:** Strictly server-enforced margin bounds (capped at max 10% or ₹15) — zero risk of prompt injection manipulating rupee figures.
+  - **Anti-Gaming Shield:** Detects repeat drop-off attempts per student phone number within 12 hours. Replaces monetary discounts with non-monetary queue tokens ("Priority Pickup Pass") to eliminate moral hazard.
+  - **Real Razorpay Payment Link Creation:** Integrates directly with Razorpay `/v1/payment_links` API with accurate 20-minute expiry and merchant reference tracking.
 
 ### 2. WhatsApp Smartphone Simulator
 - An interactive, smartphone frame modal previewing the exact automated message received by the student.
-- Includes personalized student salutations, discount urgency copywriting, and a high-converting **Complete Payment via Razorpay** CTA button.
+- Includes personalized student salutations, dynamic urgency copywriting, and a high-converting **Complete Payment via Razorpay** CTA button.
 
-### 3. AI Canteen Rush-Hour & Kitchen Load Predictor
-- Continuously calculates campus traffic windows (e.g., Peak Lunch Rush, 84% Kitchen Load, 18-minute wait times).
-- Features **⚡ Trigger Auto-Pilot Recovery** to proactively deploy pre-order express pickup passes to students before they abandon counter lines.
+### 3. AI Canteen Rush-Hour & Dynamic Kitchen Engine
+- Continuously calculates campus traffic windows (Peak Lunch Rush 12:45–1:30 PM, Evening Snack Rush 4:00–5:15 PM) with dynamic kitchen load %, live queue lengths, and prep wait times.
+- Features **⚡ Trigger Auto-Pilot Recovery** to deploy batch recovery passes with Razorpay links to queue dropouts.
 
-### 4. Inline 1-Click Dynamic UPI QR Code
-- Because Indian college students primarily transact via UPI, each recovery card features an inline, dynamic UPI QR code instantly scannable by Google Pay, PhonePe, Paytm, or CRED.
+### 4. Native Inline 1-Click UPI Intent QR Code
+- Because Indian college students primarily transact via UPI, each recovery card encodes a **native `upi://pay` URI** (`upi://pay?pa=razorpay@icici&pn=MEC%20Canteen&am=...&cu=INR&tr=...`).
+- Directly triggers the Google Pay, PhonePe, Paytm, or CRED payment sheet when scanned, without browser redirection.
 
-### 5. Financial Merchant AI Copilot
-- Conversational business intelligence engine allowing canteen operators to ask queries like:
-  - *"How much revenue was recovered today?"*
-  - *"Why are shawarmas seeing high drop-offs?"*
-  - *"What is our recovery ROI?"*
-- Real-time data synthesis across orders, recovered amounts, and drop-off analytics.
+### 5. Autonomous Merchant Financial AI Copilot (Tool Calling / Function Execution)
+- An active intelligence agent capable of executing actions on the canteen system:
+  - `toggle_item_availability`: Real-time stock control (*"Mark Shawarma sold out"* or *"Enable Biryani"*).
+  - `trigger_batch_recovery`: Automatically scans and recovers all dropped lunch rush orders.
+  - `get_financial_audit`: Natural language audit of recovered revenue, margin protected, and anti-gaming interventions.
 
-### 6. Neo-Brutalist Comic Pop Design System
+### 6. FinTech Security & Cryptographic Integrity
+- **HMAC-SHA256 Signature Verification:** Standard orders cryptographically verified using `crypto.createHmac('sha256', secret).update(order_id + '|' + payment_id)`.
+- **Timing-Safe Webhook Authentication:** Incoming Razorpay webhooks validated against `x-razorpay-signature` using `crypto.timingSafeEqual`.
+
+### 7. Neo-Brutalist Comic Pop Design System
 - Custom visual language inspired by modern interactive web experiences (warm parchment canvas `#fffdf7`, 2.5px solid ink outlines, 4px hard offset drop-shadows, tilted comic badges, tactile micro-animations).
 
 ---
@@ -92,10 +97,11 @@ During these rush hours:
 
 | API / Feature | Endpoint / SDK Method | Purpose |
 | :--- | :--- | :--- |
-| **Razorpay Standard Orders** | `razorpay.orders.create({ amount, currency, receipt })` | Standard menu checkout for students placing live orders. |
+| **Razorpay Standard Orders** | `razorpay.orders.create({ amount, currency, receipt })` | Standard menu checkout for students placing live canteen orders. |
 | **Payment Links API** | `razorpay.paymentLink.create({ amount, description, customer, notify, expire_by })` | Generates secure, personalized payment recovery links with automated SMS/email reminders. |
-| **Webhook Verification** | `crypto.createHmac('sha256', secret).update(body).digest('hex')` | Cryptographically authenticates incoming `payment_link.paid` and `order.paid` webhooks. |
-| **Signature Verification** | `razorpay_order_id + '|' + razorpay_payment_id` | Verifies client checkout integrity on backend before fulfilling canteen tokens. |
+| **Cryptographic Webhook Verification** | `crypto.timingSafeEqual(expected, actual)` | Authenticates incoming `payment_link.paid` and `order.paid` webhooks with raw body buffers. |
+| **Order Signature Verification** | `crypto.createHmac('sha256', secret).update(order_id + '|' + payment_id)` | Cryptographically authenticates client checkout integrity before issuing kitchen tokens. |
+| **Native UPI Intent Protocol** | `upi://pay?pa=...&pn=...&am=...&tr=...` | Direct UPI intent QR generator for instant 1-scan mobile payments via GPay/PhonePe. |
 
 ---
 

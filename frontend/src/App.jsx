@@ -18,16 +18,21 @@ export default function App() {
   ]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [analytics, setAnalytics] = useState(null);
+  const [kitchenData, setKitchenData] = useState(null);
   const [recoveryLogs, setRecoveryLogs] = useState([]);
   const [webhooks, setWebhooks] = useState([]);
-  const [razorpayKeyId, setRazorpayKeyId] = useState('rzp_test_TY6AGJsq3z1kEy');
+  const [razorpayKeyId, setRazorpayKeyId] = useState('');
 
   // Load Menu & Initial Analytics
-  useEffect(() => {
+  const fetchMenu = () => {
     fetch('/api/menu')
       .then((r) => r.json())
       .then((d) => d.menu && setMenu(d.menu))
       .catch(console.error);
+  };
+
+  useEffect(() => {
+    fetchMenu();
 
     fetch('/api/config')
       .then((r) => r.json())
@@ -41,7 +46,10 @@ export default function App() {
   const fetchAnalytics = () => {
     fetch('/api/analytics')
       .then((r) => r.json())
-      .then((d) => d.analytics && setAnalytics(d.analytics))
+      .then((d) => {
+        if (d.analytics) setAnalytics(d.analytics);
+        if (d.kitchen) setKitchenData(d.kitchen);
+      })
       .catch(console.error);
   };
 
@@ -116,7 +124,7 @@ export default function App() {
         image: '/logo.jpg',
         order_id: data.order.id,
         handler: async function (response) {
-          await fetch('/api/orders/verify', {
+          const verifyRes = await fetch('/api/orders/verify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -126,7 +134,12 @@ export default function App() {
               localOrderId: data.localOrderId
             })
           });
-          alert('🎉 Payment confirmed via Razorpay! Kitchen ticket issued.');
+          const verifyData = await verifyRes.json();
+          if (!verifyData.success) {
+            alert('🚨 Cryptographic Tampering Alert: ' + verifyData.message);
+            return;
+          }
+          alert('🎉 Payment verified via HMAC-SHA256! Kitchen ticket issued.');
           setCart([]);
           setIsCartOpen(false);
           fetchAnalytics();
@@ -207,6 +220,28 @@ export default function App() {
     }
   };
 
+  // Autonomous Batch Recovery for Canteen Rush Hours
+  const handleBatchRecovery = async () => {
+    try {
+      const res = await fetch('/api/recovery/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchAnalytics();
+        fetchRecoveryLogs();
+        setToastMessage({
+          title: '⚡ Auto-Pilot Batch Complete!',
+          detail: data.message
+        });
+        setTimeout(() => setToastMessage(null), 6000);
+      }
+    } catch (err) {
+      console.error('Batch recovery error:', err);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <div className="halftone-overlay" />
@@ -274,7 +309,10 @@ export default function App() {
         ) : (
           <div className="space-y-6">
             {/* Feature 1: AI Canteen Rush-Hour & Kitchen Load Predictor */}
-            <KitchenPredictor onTriggerFlashRecovery={() => handleSimulateAbandon({ reason: 'Kitchen Rush Auto-Recovery' })} />
+            <KitchenPredictor
+              kitchenData={kitchenData}
+              onTriggerFlashRecovery={handleBatchRecovery}
+            />
 
             {/* Feature 2: Autonomous Agent Timeline with WhatsApp Simulator & QR code */}
             <AgentTimeline
@@ -284,7 +322,18 @@ export default function App() {
             />
 
             {/* Feature 3: Merchant Financial AI Copilot Chat */}
-            <CopilotChat />
+            <CopilotChat
+              onToolExecuted={(toolResult) => {
+                fetchMenu();
+                fetchAnalytics();
+                fetchRecoveryLogs();
+                setToastMessage({
+                  title: '⚡ Autonomous Action Executed',
+                  detail: toolResult.message
+                });
+                setTimeout(() => setToastMessage(null), 6000);
+              }}
+            />
           </div>
         )}
       </main>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Flame, Clock, Users, Zap, Loader2 } from 'lucide-react';
+import { Flame, Clock, Users, Zap, Loader2, ShieldCheck } from 'lucide-react';
 
-export function KitchenPredictor({ onTriggerFlashRecovery }) {
+export function KitchenPredictor({ kitchenData, onTriggerFlashRecovery }) {
   const [isDeploying, setIsDeploying] = useState(false);
 
   const handleSurge = async () => {
@@ -10,22 +10,28 @@ export function KitchenPredictor({ onTriggerFlashRecovery }) {
     setIsDeploying(false);
   };
 
+  const loadPercentage = kitchenData?.kitchenLoadPercentage || 84;
+  const waitTime = kitchenData?.avgWaitMinutes || 18;
+  const queueLength = kitchenData?.queueLength || 42;
+  const windowLabel = kitchenData?.windowLabel || "Peak Lunch Window · Dynamic Capacity";
+  const isSurge = kitchenData?.isSurge !== undefined ? kitchenData.isSurge : true;
+
   return (
     <div className="comic-card p-4 sm:p-5 bg-[var(--paper)] border-2 border-[var(--ink)] shadow-[4px_4px_0px_var(--ink)]">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Left: Surge Status */}
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[var(--pop-red)] animate-ping" />
-            <span className="text-xs font-black uppercase tracking-wider text-[var(--pop-red)] flex items-center gap-1">
-              <Flame className="w-4 h-4" /> Live Canteen Rush-Hour Predictor
+            <span className={`w-3 h-3 rounded-full ${isSurge ? 'bg-[var(--pop-red)] animate-ping' : 'bg-[var(--pop-teal)]'}`} />
+            <span className={`text-xs font-black uppercase tracking-wider flex items-center gap-1 ${isSurge ? 'text-[var(--pop-red)]' : 'text-[var(--pop-teal-deep)]'}`}>
+              <Flame className="w-4 h-4" /> Live Canteen Rush-Hour & Load Engine
             </span>
           </div>
           <h3 className="text-lg sm:text-xl font-black" style={{ fontFamily: 'var(--font-display)' }}>
-            Peak Lunch Window · 84% Kitchen Load Capacity
+            {windowLabel} · {loadPercentage}% Kitchen Load
           </h3>
           <p className="text-xs font-bold text-[var(--ink-soft)] max-w-xl">
-            AI monitors MEC counter queues & predicts order drop-offs. High wait times cause 40% cart abandonment.
+            Real-time queue load monitoring. Autonomous Razorpay agent dispatches queue-bypass links with anti-gaming caps when delays trigger cart drops.
           </p>
         </div>
 
@@ -36,7 +42,7 @@ export function KitchenPredictor({ onTriggerFlashRecovery }) {
               <Clock className="w-3.5 h-3.5" /> Avg Wait
             </div>
             <div className="text-xl font-black text-[var(--ink)]" style={{ fontFamily: 'var(--font-display)' }}>
-              18 min
+              {waitTime} min
             </div>
           </div>
 
@@ -45,7 +51,7 @@ export function KitchenPredictor({ onTriggerFlashRecovery }) {
               <Users className="w-3.5 h-3.5" /> In Queue
             </div>
             <div className="text-xl font-black text-[var(--ink)]" style={{ fontFamily: 'var(--font-display)' }}>
-              42 ppl
+              {queueLength} ppl
             </div>
           </div>
 
@@ -65,7 +71,7 @@ export function KitchenPredictor({ onTriggerFlashRecovery }) {
               ) : (
                 <>
                   <Zap className="w-4 h-4" />
-                  <span>⚡ Auto-Pilot Recovery</span>
+                  <span>⚡ Auto-Pilot Batch</span>
                 </>
               )}
             </button>
@@ -78,3 +84,4 @@ export function KitchenPredictor({ onTriggerFlashRecovery }) {
     </div>
   );
 }
+

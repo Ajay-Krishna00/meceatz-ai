@@ -175,6 +175,73 @@ class Database {
     return this.data.webhooks.slice(0, 20);
   }
 
+  toggleMenuItem(itemId, available) {
+    const item = this.data.menu.find((m) => m.id === itemId || m.name.toLowerCase().includes(itemId.toLowerCase()));
+    if (item) {
+      item.available = available !== undefined ? available : !item.available;
+      this.save();
+      return item;
+    }
+    return null;
+  }
+
+  getCustomerRecoveryHistory(contact) {
+    if (!contact) return [];
+    const normalized = contact.replace(/\D/g, "").slice(-10);
+    const twelveHoursAgo = Date.now() - 12 * 60 * 60 * 1000;
+    return this.data.recoveryLogs.filter((log) => {
+      const logContact = (log.customer?.contact || "").replace(/\D/g, "").slice(-10);
+      const isMatch = logContact === normalized;
+      const isRecent = new Date(log.timestamp).getTime() > twelveHoursAgo;
+      return isMatch && isRecent;
+    });
+  }
+
+  getUnrecoveredOrders() {
+    return this.data.orders.filter((o) => o.status === "abandoned");
+  }
+
+  getKitchenMetrics() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const timeDecimal = hours + minutes / 60;
+
+    // Peak lunch rush at MEC: 12:30 PM (12.5) to 1:45 PM (13.75)
+    // Evening snack rush: 4:00 PM (16.0) to 5:15 PM (17.25)
+    let baseLoad = 35;
+    let windowLabel = "Off-Peak Window";
+    let isSurge = false;
+
+    if (timeDecimal >= 12.5 && timeDecimal <= 13.8) {
+      baseLoad = 82;
+      windowLabel = "Peak Lunch Rush (MEC 12:45–1:30 PM)";
+      isSurge = true;
+    } else if (timeDecimal >= 15.75 && timeDecimal <= 17.25) {
+      baseLoad = 68;
+      windowLabel = "Evening Snack Rush (Chai & Samosa)";
+      isSurge = true;
+    } else if (timeDecimal >= 9.0 && timeDecimal <= 11.5) {
+      baseLoad = 55;
+      windowLabel = "Morning Breakfast Counter";
+    }
+
+    const pendingCount = this.data.orders.filter((o) => o.status === "paid" || o.status === "recovered").length;
+    const dynamicLoad = Math.min(98, Math.max(20, baseLoad + Math.floor(pendingCount % 12)));
+    const estimatedQueue = Math.max(6, Math.round((dynamicLoad / 100) * 48));
+    const avgWaitMinutes = Math.max(3, Math.round((estimatedQueue * 1.8) / 3));
+
+    return {
+      windowLabel,
+      isSurge,
+      kitchenLoadPercentage: dynamicLoad,
+      queueLength: estimatedQueue,
+      avgWaitMinutes,
+      activePendingPrep: pendingCount,
+      timestamp: now.toISOString()
+    };
+  }
+
   recalculateAnalytics() {
     const orders = this.data.orders;
     const totalOrders = orders.length;

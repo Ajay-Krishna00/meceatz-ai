@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Send, Bot, Sparkles, User, HelpCircle } from 'lucide-react';
 
-export function CopilotChat() {
+export function CopilotChat({ onToolExecuted }) {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([
     {
@@ -39,9 +39,14 @@ export function CopilotChat() {
           {
             role: 'assistant',
             content: data.answer.reply,
+            toolExecution: data.answer.toolExecution,
             quickActions: data.answer.quickActions || []
           }
         ]);
+
+        if (data.answer.toolExecution && onToolExecuted) {
+          onToolExecuted(data.answer.toolExecution);
+        }
       } else {
         setMessages((prev) => [
           ...prev,
@@ -70,13 +75,13 @@ export function CopilotChat() {
               Merchant Financial AI Copilot
             </h3>
             <p className="text-xs font-extrabold text-[var(--ink-soft)] uppercase">
-              Natural Language Revenue Analytics & Operations Automation
+              Autonomous Operations & Tool Calling Agent
             </p>
           </div>
         </div>
 
         <span className="sticker sticker-teal text-xs hidden sm:inline-block">
-          Llama-3.3 70B
+          Tool Execution Active
         </span>
       </div>
 
@@ -98,6 +103,17 @@ export function CopilotChat() {
               <div className="whitespace-pre-line leading-relaxed">
                 {m.content}
               </div>
+
+              {/* Tool Execution Outcome Card */}
+              {m.toolExecution && (
+                <div className="mt-2.5 p-2.5 rounded-lg border-2 border-[var(--ink)] bg-[var(--pop-yellow-soft)] text-xs font-bold text-[var(--ink)] space-y-1 shadow-[2px_2px_0px_var(--ink)]">
+                  <div className="flex items-center gap-1.5 font-black text-[11px] uppercase text-[var(--ink)]">
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--pop-purple)]" />
+                    <span>Autonomous Action Executed: {m.toolExecution.tool}</span>
+                  </div>
+                  <p className="text-[11px] text-[var(--ink-soft)] font-medium">{m.toolExecution.message}</p>
+                </div>
+              )}
 
               {/* Quick Action Chips */}
               {m.quickActions && m.quickActions.length > 0 && (

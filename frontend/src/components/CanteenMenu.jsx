@@ -63,50 +63,67 @@ export function CanteenMenu({ menu, addToCart, onSimulateCartDrop }) {
 
       {/* Menu Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-        {filteredItems.map((item) => (
-          <div key={item.id} className="comic-card p-4 sm:p-5 flex flex-col justify-between h-full">
-            <div>
-              <div className="flex items-start justify-between gap-2 mb-2">
-                <span className="sticker sticker-teal text-[11px]">
-                  {item.category}
-                </span>
-                {item.tag && (
-                  <span className="sticker tilt-right text-[10px] !bg-[var(--pop-yellow)]">
-                    {item.tag}
-                  </span>
-                )}
-              </div>
-
-              <h3 className="font-black text-lg sm:text-xl leading-snug mt-1" style={{ fontFamily: 'var(--font-display)' }}>
-                {item.name}
-              </h3>
-
-              <p className="text-xs font-semibold text-[var(--ink-soft)] line-clamp-2 mt-1 mb-4">
-                {item.description}
-              </p>
-            </div>
-
-            <div className="pt-3 border-t-2 border-[var(--ink)] flex items-center justify-between">
+        {filteredItems.map((item) => {
+          const isSoldOut = item.available === false;
+          return (
+            <div
+              key={item.id}
+              className={`comic-card p-4 sm:p-5 flex flex-col justify-between h-full ${
+                isSoldOut ? 'opacity-60 grayscale-[40%] bg-[var(--paper-3)]' : ''
+              }`}
+            >
               <div>
-                <span className="text-xl font-black" style={{ fontFamily: 'var(--font-display)' }}>
-                  ₹{item.price}
-                </span>
-                <div className="flex items-center gap-1 text-[11px] font-extrabold text-[var(--ink-soft)]">
-                  <Clock className="w-3 h-3" />
-                  <span>{item.prepTime}</span>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <span className="sticker sticker-teal text-[11px]">
+                    {item.category}
+                  </span>
+                  {isSoldOut ? (
+                    <span className="sticker sticker-red text-[10px] !bg-[var(--pop-red)] text-white">
+                      SOLD OUT
+                    </span>
+                  ) : item.tag && (
+                    <span className="sticker tilt-right text-[10px] !bg-[var(--pop-yellow)]">
+                      {item.tag}
+                    </span>
+                  )}
                 </div>
+
+                <h3 className="font-black text-lg sm:text-xl leading-snug mt-1" style={{ fontFamily: 'var(--font-display)' }}>
+                  {item.name}
+                </h3>
+
+                <p className="text-xs font-semibold text-[var(--ink-soft)] line-clamp-2 mt-1 mb-4">
+                  {item.description}
+                </p>
               </div>
 
-              <button
-                onClick={() => addToCart(item)}
-                className="comic-btn comic-btn-brand py-1.5 px-3 text-xs sm:text-sm"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add</span>
-              </button>
+              <div className="pt-3 border-t-2 border-[var(--ink)] flex items-center justify-between">
+                <div>
+                  <span className="text-xl font-black" style={{ fontFamily: 'var(--font-display)' }}>
+                    ₹{item.price}
+                  </span>
+                  <div className="flex items-center gap-1 text-[11px] font-extrabold text-[var(--ink-soft)]">
+                    <Clock className="w-3 h-3" />
+                    <span>{item.prepTime}</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => addToCart(item)}
+                  disabled={isSoldOut}
+                  className={`comic-btn py-1.5 px-3 text-xs sm:text-sm ${
+                    isSoldOut
+                      ? 'bg-zinc-300 border-zinc-500 text-zinc-500 cursor-not-allowed'
+                      : 'comic-btn-brand'
+                  }`}
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>{isSoldOut ? 'Sold Out' : 'Add'}</span>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
