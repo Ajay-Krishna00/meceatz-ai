@@ -224,6 +224,17 @@ router.post("/menu/toggle", (req, res) => {
   }
 });
 
+router.post("/recovery/reset", (req, res) => {
+  db.reset();
+  res.json({
+    success: true,
+    message: "Demo stream reset to clean initial state",
+    logs: db.getRecoveryLogs(),
+    webhooks: db.getWebhooks(),
+    analytics: db.getAnalytics()
+  });
+});
+
 router.get("/recovery/logs", (req, res) => {
   res.json({
     success: true,

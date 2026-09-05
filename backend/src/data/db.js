@@ -117,6 +117,109 @@ class Database {
     }
   }
 
+  reset() {
+    this.data.orders = [
+      {
+        id: "ord_178856001",
+        items: [
+          { id: "item-1", name: "MEC Special Chicken Shawarma", price: 130, quantity: 1 },
+          { id: "item-5", name: "Cold Coffee & Choco Drizzle", price: 70, quantity: 1 }
+        ],
+        amount: 200,
+        customer: { name: "Rahul Nair (EC 2026)", contact: "+919847123456" },
+        status: "recovered",
+        dropReason: "UPI Window Timed Out during Lunch Rush",
+        createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString()
+      },
+      {
+        id: "ord_178856002",
+        items: [
+          { id: "item-2", name: "Malabar Chicken Dum Biryani", price: 160, quantity: 1 }
+        ],
+        amount: 160,
+        customer: { name: "Sneha Rao (CS 2025)", contact: "+919847654321" },
+        status: "abandoned",
+        dropReason: "18-Min Counter Queue Hesitation",
+        createdAt: new Date(Date.now() - 12 * 60 * 1000).toISOString()
+      }
+    ];
+    this.data.recoveryLogs = [
+      {
+        id: "rec-101",
+        timestamp: new Date(Date.now() - 24 * 60 * 1000).toISOString(),
+        orderId: "ord_178856001",
+        customer: { name: "Rahul Nair (EC 2026)", contact: "+919847123456" },
+        items: [
+          { name: "MEC Special Chicken Shawarma", price: 130, quantity: 1 },
+          { name: "Cold Coffee & Choco Drizzle", price: 70, quantity: 1 }
+        ],
+        originalAmount: 200,
+        discountAmount: 15,
+        recoveredAmount: 185,
+        reasoning: "High-value cart during peak rush. A ₹15 instant recovery micro-incentive and express counter token overcame the UPI timeout.",
+        headline: "Shawarma reserved! Grab ₹15 off before the batch sells out ⚡",
+        incentiveType: "discount",
+        urgencyScore: 8,
+        paymentLinkUrl: "https://rzp.io/rzp/wG5JdKG",
+        paymentLinkId: "plink_TY8vqUOfoBf8Zn",
+        whatsappMessage: "Hey Rahul! 👋 Your MEC Special Chicken Shawarma & Cold Coffee were reserved. We applied a ₹15 discount to help you skip the queue!\n\n👉 Pay Now: https://rzp.io/rzp/wG5JdKG",
+        status: "recovered",
+        paidAt: new Date(Date.now() - 20 * 60 * 1000).toISOString()
+      },
+      {
+        id: "rec-102",
+        timestamp: new Date(Date.now() - 11 * 60 * 1000).toISOString(),
+        orderId: "ord_178856002",
+        customer: { name: "Sneha Rao (CS 2025)", contact: "+919847654321" },
+        items: [
+          { name: "Malabar Chicken Dum Biryani", price: 160, quantity: 1 }
+        ],
+        originalAmount: 160,
+        discountAmount: 10,
+        recoveredAmount: 150,
+        reasoning: "Perishable lunch order abandoned due to long counter queue. Proactive ₹10 discount with 1-click Razorpay payment link dispatched.",
+        headline: "Skip the Biryani Counter line with Express Pickup 🍛",
+        incentiveType: "discount",
+        urgencyScore: 7,
+        paymentLinkUrl: "https://rzp.io/rzp/ZW8IIx3",
+        paymentLinkId: "plink_TY8uTRZJYv7Kbp",
+        whatsappMessage: "Hey Sneha! Don't wait in the 18-min queue. Complete payment via Razorpay for ₹150 and collect directly from the Express Counter.\n\n👉 Pay: https://rzp.io/rzp/ZW8IIx3",
+        status: "dispatched"
+      }
+    ];
+    this.data.webhooks = [
+      {
+        id: "wh-101",
+        timestamp: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
+        event: "payment_link.paid",
+        payload: {
+          paymentLinkId: "plink_TY8vqUOfoBf8Zn",
+          recoveredAmount: 185,
+          customer: "Rahul Nair (EC 2026)"
+        }
+      },
+      {
+        id: "wh-102",
+        timestamp: new Date(Date.now() - 11 * 60 * 1000).toISOString(),
+        event: "ai.recovery.dispatched",
+        payload: {
+          recoveryId: "rec-102",
+          amount: 150,
+          paymentLinkId: "plink_TY8uTRZJYv7Kbp"
+        }
+      }
+    ];
+    this.data.analytics = {
+      totalOrders: 32,
+      recoveredOrders: 18,
+      recoveredRevenue: 4250,
+      abandonedRevenue: 5820,
+      recoveryRate: 56.2
+    };
+    this.save();
+    return this.data;
+  }
+
   save() {
     try {
       fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), "utf-8");

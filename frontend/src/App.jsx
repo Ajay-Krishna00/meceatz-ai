@@ -203,6 +203,25 @@ export default function App() {
   };
 
   // Simulate Customer Paying the Recovered Link
+  const handleResetDemo = async () => {
+    try {
+      const res = await fetch('/api/recovery/reset', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        setRecoveryLogs(data.logs);
+        setWebhooks(data.webhooks);
+        setAnalytics(data.analytics);
+        setToastMessage({
+          title: '🧹 Demo Stream Reset',
+          detail: 'Restored clean 2-order baseline for demo recording.'
+        });
+        setTimeout(() => setToastMessage(null), 4000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSimulateLinkPayment = async (recoveryId) => {
     try {
       const res = await fetch('/api/recovery/simulate-pay', {
@@ -319,6 +338,7 @@ export default function App() {
               logs={recoveryLogs}
               webhooks={webhooks}
               onSimulatePayment={handleSimulateLinkPayment}
+              onResetDemo={handleResetDemo}
             />
 
             {/* Feature 3: Merchant Financial AI Copilot Chat */}
