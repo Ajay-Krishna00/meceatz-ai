@@ -81,10 +81,22 @@ export function WhatsAppModal({ isOpen, onClose, recoveryData }) {
         </div>
 
         {/* Phone Bottom Footer */}
-        <div className="bg-[#1f2c34] p-3 text-center border-t border-[#2a3942]">
+        <div className="bg-[#1f2c34] p-3 border-t border-[#2a3942] flex flex-col items-center gap-2">
           <span className="text-[11px] font-bold text-[#aebac1]">
             Recipient: <strong>{recoveryData.customer?.name}</strong> ({recoveryData.customer?.contact})
           </span>
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(
+              (recoveryData.whatsappMessage || "Hey! Your hot canteen meal is waiting for you in the kitchen.") +
+              (recoveryData.paymentLinkUrl ? `\n\n👉 Complete Payment: ${recoveryData.paymentLinkUrl}` : "")
+            )}`}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white text-xs font-black py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-98"
+          >
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>Open in Real WhatsApp (Web / Mobile)</span>
+          </a>
         </div>
       </div>
     </div>

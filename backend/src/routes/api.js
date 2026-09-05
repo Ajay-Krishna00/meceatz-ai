@@ -147,33 +147,74 @@ router.post("/recovery/batch", async (req, res) => {
     const results = [];
 
     if (unrecovered.length === 0) {
-      // Seed a realistic rush hour drop for demo
-      const seedDrop = {
-        id: "ord_rush_" + Date.now().toString().slice(-4),
-        items: [{ name: "Malabar Dum Biryani", price: 180, quantity: 1 }],
-        amount: 180,
-        customer: { name: "Gautham P (Mech '26)", contact: "+919847998877" },
-        status: "abandoned",
-        dropReason: "18-Min Counter Queue Hesitation"
-      };
-      db.addOrder(seedDrop);
-      const rec = await processAbandonedCart(seedDrop);
+      return res.json({
+        success: true,
+        count: 0,
+        message: "No unrecovered abandoned carts in current window. All orders have been resolved or checked out!",
+        recovered: []
+      });
+    }
+
+    for (const order of unrecovered.slice(0, 3)) {
+      const rec = await processAbandonedCart(order);
       results.push(rec);
-    } else {
-      for (const order of unrecovered.slice(0, 3)) {
-        const rec = await processAbandonedCart(order);
-        results.push(rec);
-      }
     }
 
     res.json({
       success: true,
+      count: results.length,
       message: `⚡ Auto-Pilot deployed ${results.length} priority pickup links with Razorpay!`,
       recovered: results
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
+});
+
+// Explicit Benchmark Dataset Loader for Hackathon Evaluator Testing
+router.post("/benchmark/seed-cohort", (req, res) => {
+  const benchmarkOrders = [
+    {
+      id: "ord_bench_01",
+      items: [{ id: "item-1", name: "MEC Special Chicken Shawarma", price: 130, quantity: 1 }],
+      amount: 130,
+      customer: { name: "Gautham P (Mech '26)", contact: "+919847998877" },
+      status: "abandoned",
+      dropReason: "18-Min Counter Queue Hesitation",
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: "ord_bench_02",
+      items: [{ id: "item-2", name: "Malabar Dum Biryani", price: 180, quantity: 1 }],
+      amount: 180,
+      customer: { name: "Ananya S (CS '25)", contact: "+919847223344" },
+      status: "abandoned",
+      dropReason: "UPI Window Timed Out during Lunch Rush",
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: "ord_bench_03",
+      items: [
+        { id: "item-4", name: "Kerala Porotta & Roast", price: 110, quantity: 1 },
+        { id: "item-5", name: "Cold Coffee & Choco Drizzle", price: 70, quantity: 1 }
+      ],
+      amount: 180,
+      customer: { name: "Karthik V (EEE '26)", contact: "+919847334455" },
+      status: "abandoned",
+      dropReason: "Payment Sheet Dismissed at 12:55 PM",
+      createdAt: new Date().toISOString()
+    }
+  ];
+
+  for (const bo of benchmarkOrders) {
+    db.addOrder(bo);
+  }
+
+  res.json({
+    success: true,
+    message: `Loaded ${benchmarkOrders.length} benchmark dropped carts into queue for evaluation testing.`,
+    orders: benchmarkOrders
+  });
 });
 
 router.post("/recovery/simulate-pay", (req, res) => {
@@ -266,7 +307,7 @@ router.post("/copilot/chat", async (req, res) => {
   }
 });
 
-// 🛡️ Razorpay Webhooks with Cryptographic Verification
+// 🛡️ Razorpay Webhooks with Cryptographic Verification & Full Loop Closure
 router.post("/webhooks/razorpay", (req, res) => {
   const signature = req.headers["x-razorpay-signature"];
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
@@ -280,15 +321,86 @@ router.post("/webhooks/razorpay", (req, res) => {
   }
 
   const event = req.body;
-  console.log("✅ Cryptographically Valid Razorpay Webhook Event:", event?.event);
+  const eventType = event?.event;
+  console.log("✅ Cryptographically Valid Razorpay Webhook Event:", eventType);
+
+  let recoveryUpdated = null;
+  let orderUpdated = null;
+
+  // 1. Handle Payment Link Paid (Real Razorpay Payment Link payment)
+  if (eventType === "payment_link.paid") {
+    const plinkEntity = event?.payload?.payment_link?.entity;
+    const paymentEntity = event?.payload?.payment?.entity;
+    const plinkId = plinkEntity?.id;
+    const notes = plinkEntity?.notes || {};
+
+    const recoveryLogs = db.getRecoveryLogs();
+    const log = recoveryLogs.find(
+      (l) =>
+        (plinkId && l.paymentLinkId === plinkId) ||
+        (notes.recoveryId && l.id === notes.recoveryId) ||
+        (notes.orderId && l.orderId === notes.orderId)
+    );
+
+    if (log) {
+      log.status = "recovered";
+      log.paidAt = new Date().toISOString();
+      log.paymentId = paymentEntity?.id || "pay_webhook_live";
+      log.paidMethod = paymentEntity?.method || "upi";
+
+      if (log.orderId) {
+        orderUpdated = db.updateOrder(log.orderId, {
+          status: "recovered",
+          paidVia: "razorpay_payment_link_webhook",
+          paymentId: paymentEntity?.id
+        });
+      }
+      recoveryUpdated = log;
+      console.log(`🎉 Webhook Loop Closed: Order ${log.orderId} marked RECOVERED via Razorpay Link ${plinkId}!`);
+    }
+  }
+
+  // 2. Handle Standard Checkout Order Paid / Payment Captured
+  if (eventType === "order.paid" || eventType === "payment.captured") {
+    const orderEntity = event?.payload?.order?.entity;
+    const paymentEntity = event?.payload?.payment?.entity;
+    const targetOrderId = orderEntity?.id || paymentEntity?.order_id || paymentEntity?.notes?.orderId;
+
+    if (targetOrderId) {
+      const orders = db.getOrders();
+      const existing = orders.find((o) => o.id === targetOrderId || o.razorpayOrderId === targetOrderId);
+      if (existing) {
+        orderUpdated = db.updateOrder(existing.id, {
+          status: "paid",
+          paidVia: "razorpay_standard_webhook",
+          paymentId: paymentEntity?.id
+        });
+        console.log(`💳 Webhook Loop Closed: Standard Order ${existing.id} marked PAID!`);
+      }
+    }
+  }
+
+  // Recalculate dynamic analytics immediately on payment event
+  if (recoveryUpdated || orderUpdated) {
+    db.recalculateAnalytics();
+    db.save();
+  }
 
   db.addWebhook({
-    event: event?.event || "razorpay.verified_event",
+    event: eventType || "razorpay.verified_event",
     payload: event?.payload || event || {},
-    signatureVerified: Boolean(signature)
+    signatureVerified: Boolean(signature),
+    loopClosed: Boolean(recoveryUpdated || orderUpdated),
+    recoveredOrderId: recoveryUpdated?.orderId || orderUpdated?.id || null
   });
 
-  res.status(200).json({ status: "ok", verified: true });
+  res.status(200).json({
+    status: "ok",
+    verified: true,
+    processed: Boolean(recoveryUpdated || orderUpdated),
+    recovery: recoveryUpdated,
+    order: orderUpdated
+  });
 });
 
 export default router;

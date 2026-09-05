@@ -107,11 +107,13 @@ Current Time: ${new Date().toLocaleTimeString()} (College Canteen Hours)`;
       contact: safeContact
     },
     notes: {
+      orderId: orderId || `ord_${recoveryId}`,
+      recoveryId: recoveryId,
       original_amount: totalAmount,
       discount_applied: verifiedDiscount,
       incentive_type: incentiveType,
       anti_gaming_passed: !isAbuseRisk,
-      reasoning: finalReasoning.slice(0, 200)
+      reasoning: finalReasoning.slice(0, 150)
     },
     expireInMinutes: 20
   });

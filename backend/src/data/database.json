@@ -142,7 +142,10 @@
       },
       "status": "recovered",
       "dropReason": "UPI Window Timed Out during Lunch Rush",
-      "createdAt": "2026-09-04T23:57:42.855Z"
+      "createdAt": "2026-09-04T23:57:42.855Z",
+      "paidVia": "razorpay_payment_link_webhook",
+      "paymentId": "pay_test_live_001",
+      "updatedAt": "2026-09-05T11:15:09.970Z"
     },
     {
       "id": "ord_178856002",
@@ -243,7 +246,9 @@
       "paymentLinkId": "plink_TY8vqUOfoBf8Zn",
       "whatsappMessage": "Hey Rahul! 👋 Your MEC Special Chicken Shawarma & Cold Coffee were reserved. We applied a ₹15 discount to help you skip the queue!\n\n👉 Pay Now: https://rzp.io/rzp/wG5JdKG",
       "status": "recovered",
-      "paidAt": "2026-09-05T00:02:42.872Z"
+      "paidAt": "2026-09-05T11:15:09.970Z",
+      "paymentId": "pay_test_live_001",
+      "paidMethod": "upi"
     },
     {
       "id": "rec-102",
@@ -274,6 +279,62 @@
     }
   ],
   "webhooks": [
+    {
+      "id": "wh-1788606909971",
+      "timestamp": "2026-09-05T11:15:09.971Z",
+      "event": "payment_link.paid",
+      "payload": {
+        "payment_link": {
+          "entity": {
+            "id": "plink_TY8vqUOfoBf8Zn",
+            "amount": 18500,
+            "status": "paid",
+            "notes": {
+              "orderId": "ord_178856001",
+              "recoveryId": "rec-101"
+            }
+          }
+        },
+        "payment": {
+          "entity": {
+            "id": "pay_test_live_001",
+            "method": "upi",
+            "status": "captured"
+          }
+        }
+      },
+      "signatureVerified": false,
+      "loopClosed": true,
+      "recoveredOrderId": "ord_178856001"
+    },
+    {
+      "id": "wh-1788606905798",
+      "timestamp": "2026-09-05T11:15:05.798Z",
+      "event": "payment_link.paid",
+      "payload": {
+        "payment_link": {
+          "entity": {
+            "id": "plink_TY8vqUOfoBf8Zn",
+            "amount": 18500,
+            "status": "paid",
+            "notes": {
+              "orderId": "ord_178856001",
+              "recoveryId": "rec-101"
+            }
+          }
+        },
+        "payment": {
+          "entity": {
+            "id": "pay_test_live_001",
+            "method": "upi",
+            "status": "captured"
+          }
+        }
+      },
+      "signatureVerified": false,
+      "loopClosed": true,
+      "recoveredOrderId": "ord_178856001"
+    },
     {
       "id": "wh-1788602783738",
       "timestamp": "2026-09-05T10:06:23.738Z",

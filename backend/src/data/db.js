@@ -96,11 +96,11 @@ class Database {
       recoveryLogs: [],
       webhooks: [],
       analytics: {
-        totalOrders: 32,
-        recoveredOrders: 18,
-        recoveredRevenue: 4250,
-        abandonedRevenue: 5820,
-        recoveryRate: 56.2
+        totalOrders: 0,
+        recoveredOrders: 0,
+        recoveredRevenue: 0,
+        abandonedRevenue: 0,
+        recoveryRate: 0
       }
     };
     this.load();
@@ -209,13 +209,7 @@ class Database {
         }
       }
     ];
-    this.data.analytics = {
-      totalOrders: 32,
-      recoveredOrders: 18,
-      recoveredRevenue: 4250,
-      abandonedRevenue: 5820,
-      recoveryRate: 56.2
-    };
+    this.recalculateAnalytics();
     this.save();
     return this.data;
   }
@@ -346,24 +340,27 @@ class Database {
   }
 
   recalculateAnalytics() {
-    const orders = this.data.orders;
+    const orders = this.data.orders || [];
     const totalOrders = orders.length;
     const recoveredOrders = orders.filter((o) => o.status === "recovered" || o.status === "paid_via_recovery").length;
     const recoveredRevenue = orders
       .filter((o) => o.status === "recovered" || o.status === "paid_via_recovery")
-      .reduce((sum, o) => sum + (o.amount || 0), 0);
+      .reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+    const abandonedOrders = orders.filter((o) => o.status === "abandoned" || o.status === "failed" || o.status === "pending_payment").length;
     const abandonedRevenue = orders
-      .filter((o) => o.status === "abandoned" || o.status === "failed")
-      .reduce((sum, o) => sum + (o.amount || 0), 0);
-    const recoveryRate = totalOrders > 0 ? ((recoveredOrders / Math.max(1, recoveredOrders + orders.filter((o) => o.status === "abandoned" || o.status === "failed").length)) * 100).toFixed(1) : 0;
+      .filter((o) => o.status === "abandoned" || o.status === "failed" || o.status === "pending_payment")
+      .reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+    const totalDrops = recoveredOrders + abandonedOrders;
+    const recoveryRate = totalDrops > 0 ? Number(((recoveredOrders / totalDrops) * 100).toFixed(1)) : 0;
 
     this.data.analytics = {
-      totalOrders: totalOrders || 32,
-      recoveredOrders: recoveredOrders || 18,
-      recoveredRevenue: recoveredRevenue || 4250,
-      abandonedRevenue: abandonedRevenue || 5820,
-      recoveryRate: Number(recoveryRate || 56.2)
+      totalOrders,
+      recoveredOrders,
+      recoveredRevenue,
+      abandonedRevenue,
+      recoveryRate
     };
+    return this.data.analytics;
   }
 
   getAnalytics() {

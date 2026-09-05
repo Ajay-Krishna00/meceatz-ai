@@ -5,21 +5,21 @@ export function MetricsBar({ analytics }) {
   const stats = [
     {
       label: 'AI Recovered Revenue',
-      val: `₹${(analytics?.recoveredRevenue || 4250).toLocaleString()}`,
-      sub: `+${analytics?.recoveredOrders || 18} orders saved`,
+      val: `₹${(analytics?.recoveredRevenue ?? 0).toLocaleString()}`,
+      sub: `+${analytics?.recoveredOrders ?? 0} orders saved`,
       color: 'var(--pop-teal)',
       icon: TrendingUp
     },
     {
       label: 'Abandoned Carts',
-      val: `₹${(analytics?.abandonedRevenue || 5820).toLocaleString()}`,
+      val: `₹${(analytics?.abandonedRevenue ?? 0).toLocaleString()}`,
       sub: 'Detected at checkout drop',
       color: 'var(--pop-yellow)',
       icon: AlertTriangle
     },
     {
       label: 'AI Recovery Rate',
-      val: `${analytics?.recoveryRate || 56.2}%`,
+      val: `${analytics?.recoveryRate ?? 0}%`,
       sub: '% of dropped carts saved',
       color: 'var(--pop-purple)',
       icon: CheckCircle2,
@@ -27,7 +27,7 @@ export function MetricsBar({ analytics }) {
     },
     {
       label: 'Total Orders Processed',
-      val: analytics?.totalOrders || 32,
+      val: analytics?.totalOrders ?? 0,
       sub: 'MEC Canteen today',
       color: 'var(--paper-3)',
       icon: DollarSign

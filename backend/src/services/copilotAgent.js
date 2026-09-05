@@ -49,23 +49,12 @@ async function executeTool(toolCall) {
     if (toolCall.name === "trigger_batch_recovery") {
       const unrecovered = db.getUnrecoveredOrders();
       if (unrecovered.length === 0) {
-        // Create an example dropped cart to demonstrate real recovery if empty
-        const sampleOrder = {
-          id: "ord_batch_" + Date.now().toString().slice(-4),
-          items: [{ name: "MEC Special Chicken Shawarma", price: 130, quantity: 1 }],
-          amount: 130,
-          customer: { name: "Ananthu K (CS '25)", contact: "+919847112233" },
-          status: "abandoned",
-          dropReason: "Counter Rush Queue Drop"
-        };
-        db.addOrder(sampleOrder);
-        const recovery = await processAbandonedCart(sampleOrder);
         return {
           tool: "trigger_batch_recovery",
           success: true,
-          message: `Dispatched Razorpay Recovery Link to **${sampleOrder.customer.name}** for **${sampleOrder.items[0].name}** (₹${recovery.recoveredAmount}). Kitchen queue pass allocated!`,
-          recoveredCount: 1,
-          details: [recovery]
+          message: "No unrecovered abandoned carts in the current window! All student orders are either paid or already recovered.",
+          recoveredCount: 0,
+          details: []
         };
       }
 

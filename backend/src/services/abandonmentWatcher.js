@@ -1,8 +1,8 @@
 import { db } from "../data/db.js";
 import { processAbandonedCart } from "./recoveryAgent.js";
 
-const STALE_THRESHOLD_MS = 3 * 60 * 1000; // 3 minutes
-const POLL_INTERVAL_MS = 90 * 1000; // Check every 90 seconds
+const STALE_THRESHOLD_MS = process.env.WATCHER_THRESHOLD_MS ? parseInt(process.env.WATCHER_THRESHOLD_MS) : 45 * 1000; // 45s for demo responsiveness
+const POLL_INTERVAL_MS = process.env.WATCHER_POLL_MS ? parseInt(process.env.WATCHER_POLL_MS) : 15 * 1000; // Check every 15s
 const processedOrderIds = new Set();
 
 /**
