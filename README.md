@@ -1,7 +1,6 @@
 # 🍔 MEC-Eatz AI — Autonomous Revenue Recovery & Merchant Copilot
-> **Engineered for the Razorpay AI Builder Track / Buildathon 2026**  
-> *Autonomous AI Financial Agents · Razorpay Orders & Payment Links API · Groq Llama-3.3 & Google Gemini 2.5*  
-> **Author:** [Ajay Krishna](https://github.com/Ajay-Krishna00) | Govt Model Engineering College (MEC), Kochi
+> **Engineered for the Razorpay AI Buildathon 2026**  
+> **Author:** [Ajay Krishna](https://github.com/Ajay-Krishna00)
 
 ---
 
