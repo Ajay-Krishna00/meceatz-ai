@@ -256,6 +256,24 @@ export default function App() {
     }
   };
 
+  const handleLoadBenchmark = async () => {
+    try {
+      const res = await fetch('/api/benchmark/seed-cohort', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        fetchAnalytics();
+        fetchRecoveryLogs();
+        setToastMessage({
+          title: '🧪 Benchmark Cohort Loaded!',
+          detail: 'Added 3 realistic peak-rush dropped orders. Click Auto-Pilot Batch to recover them!'
+        });
+        setTimeout(() => setToastMessage(null), 6000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSimulateLinkPayment = async (recoveryId) => {
     try {
       const res = await fetch('/api/recovery/simulate-pay', {
@@ -373,6 +391,7 @@ export default function App() {
               webhooks={webhooks}
               onSimulatePayment={handleSimulateLinkPayment}
               onResetDemo={handleResetDemo}
+              onLoadBenchmark={handleLoadBenchmark}
             />
 
             {/* Feature 3: Merchant Financial AI Copilot Chat */}

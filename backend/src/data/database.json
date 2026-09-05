@@ -83,41 +83,67 @@
   ],
   "orders": [
     {
-      "id": "ord_drop_1788602772371",
+      "id": "ord_bench_03",
       "items": [
         {
-          "id": "item-1",
-          "name": "MEC Special Chicken Shawarma",
-          "price": 130,
-          "quantity": 2
+          "id": "item-4",
+          "name": "Kerala Porotta & Roast",
+          "price": 110,
+          "quantity": 1
         },
         {
           "id": "item-5",
           "name": "Cold Coffee & Choco Drizzle",
           "price": 70,
           "quantity": 1
-        },
+        }
+      ],
+      "amount": 180,
+      "customer": {
+        "name": "Karthik V (EEE '26)",
+        "contact": "+919847334455"
+      },
+      "status": "abandoned",
+      "dropReason": "Payment Sheet Dismissed at 12:55 PM",
+      "createdAt": "2026-09-05T12:56:51.786Z"
+    },
+    {
+      "id": "ord_bench_02",
+      "items": [
         {
-          "id": "item-7",
-          "name": "South Indian Canteen Meals",
-          "category": "Main Course",
-          "price": 90,
-          "available": true,
-          "prepTime": "2 mins",
-          "tag": "Wholesome",
-          "description": "Steaming boiled rice, sambar, thoran, pulissery, pickle, and crisp papadam.",
+          "id": "item-2",
+          "name": "Malabar Dum Biryani",
+          "price": 180,
           "quantity": 1
         }
       ],
-      "amount": 420,
+      "amount": 180,
       "customer": {
-        "name": "Rahul Nair (EC 2026)",
-        "contact": "+919847123456",
-        "email": "rahul@mec.ac.in"
+        "name": "Ananya S (CS '25)",
+        "contact": "+919847223344"
       },
       "status": "abandoned",
-      "dropReason": "UPI Screen Switched / Timeout",
-      "createdAt": "2026-09-05T10:06:12.375Z"
+      "dropReason": "UPI Window Timed Out during Lunch Rush",
+      "createdAt": "2026-09-05T12:56:51.786Z"
+    },
+    {
+      "id": "ord_bench_01",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "MEC Special Chicken Shawarma",
+          "price": 130,
+          "quantity": 1
+        }
+      ],
+      "amount": 130,
+      "customer": {
+        "name": "Gautham P (Mech '26)",
+        "contact": "+919847998877"
+      },
+      "status": "abandoned",
+      "dropReason": "18-Min Counter Queue Hesitation",
+      "createdAt": "2026-09-05T12:56:51.786Z"
     },
     {
       "id": "ord_178856001",
@@ -142,10 +168,7 @@
       },
       "status": "recovered",
       "dropReason": "UPI Window Timed Out during Lunch Rush",
-      "createdAt": "2026-09-04T23:57:42.855Z",
-      "paidVia": "razorpay_payment_link_webhook",
-      "paymentId": "pay_test_live_001",
-      "updatedAt": "2026-09-05T11:15:09.970Z"
+      "createdAt": "2026-09-05T12:31:51.770Z"
     },
     {
       "id": "ord_178856002",
@@ -164,60 +187,127 @@
       },
       "status": "abandoned",
       "dropReason": "18-Min Counter Queue Hesitation",
-      "createdAt": "2026-09-05T00:10:42.872Z"
+      "createdAt": "2026-09-05T12:44:51.777Z"
     }
   ],
   "recoveryLogs": [
     {
-      "id": "rec-1788602783729",
-      "timestamp": "2026-09-05T10:06:23.729Z",
-      "orderId": "ord_drop_1788602772371",
+      "id": "rec-1788613027121",
+      "timestamp": "2026-09-05T12:57:13.005Z",
+      "orderId": "ord_033005",
       "customer": {
-        "name": "Rahul Nair (EC 2026)",
-        "contact": "+919847123456"
+        "name": "Gautham P (Mech '26)",
+        "contact": "+919847998877"
       },
       "items": [
         {
           "id": "item-1",
           "name": "MEC Special Chicken Shawarma",
           "price": 130,
-          "quantity": 2
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 130,
+      "discountAmount": 13,
+      "recoveredAmount": 117,
+      "reasoning": "Dynamic Micro-Discount: ₹13 (capped at 10% / ₹15 max ceiling to guarantee positive canteen contribution margin). The cart value (₹130) falls under the ₹150 threshold, so the 'Queue-Bypass Active!' hook was selected. The drop reason (queue hesitation) directly aligns with this hook, providing a solution to the student's pain point. The WhatsApp message incorporates the assigned discount (₹13 OFF), is tailored to MEC students with emojis, and maintains a punchy, warm, high-converting tone under 50 words.",
+      "headline": "Queue-Bypass Active! Pick up at express counter",
+      "incentiveType": "discount",
+      "urgencyScore": 8,
+      "antiGamingEnforced": false,
+      "aiMeta": {
+        "aiModelUsed": "gemini-2.5-flash",
+        "aiProvider": "Google DeepMind",
+        "aiLatencyMs": 5329,
+        "fallbackUsed": false
+      },
+      "paymentLinkUrl": "https://rzp.io/rzp/rw0Aq5CN",
+      "paymentLinkId": "plink_TYMah2jdnDlwTA",
+      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=117&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20MEC%20Special%20Chicken&tr=plink_TYMah2jdnDlwTA",
+      "whatsappMessage": "Hey Gautham! 👋 Your MEC Special Chicken Shawarma is ready. Skip the queue & grab it at the express counter with ₹13 OFF! No wait, just pure deliciousness. Don't miss out! 🏃‍♂️💨\n\n👉 Pay Now: https://rzp.io/rzp/rw0Aq5CN\n*(Valid for 20 mins · Razorpay UPI)*",
+      "status": "dispatched"
+    },
+    {
+      "id": "rec-1788613018586",
+      "timestamp": "2026-09-05T12:57:07.118Z",
+      "orderId": "ord_027118",
+      "customer": {
+        "name": "Ananya S (CS '25)",
+        "contact": "+919847223344"
+      },
+      "items": [
+        {
+          "id": "item-2",
+          "name": "Malabar Dum Biryani",
+          "price": 180,
+          "quantity": 1
+        }
+      ],
+      "originalAmount": 180,
+      "discountAmount": 15,
+      "recoveredAmount": 165,
+      "reasoning": "Dynamic Micro-Discount: ₹15 (capped at 10% / ₹15 max ceiling to guarantee positive canteen contribution margin). The total cart value of ₹180 is above the ₹150 threshold, triggering the 'Fresh meal reserved in kitchen! Complete in 1-click' hook. The drop reason (UPI timeout during lunch rush) indicates high purchase intent, and the current time (6:26 PM) is still within canteen hours, making a dinner recovery highly feasible. A ₹15 discount is applied as an incentive to encourage re-completion. The message is kept under 50 words, warm, and includes relevant emojis for a college student audience, focusing on the Biryani and the convenience of the offer.",
+      "headline": "Fresh meal reserved in kitchen! Complete in 1-click",
+      "incentiveType": "discount",
+      "urgencyScore": 8,
+      "antiGamingEnforced": false,
+      "aiMeta": {
+        "aiModelUsed": "gemini-2.5-flash",
+        "aiProvider": "Google DeepMind",
+        "aiLatencyMs": 7786,
+        "fallbackUsed": false
+      },
+      "paymentLinkUrl": "https://rzp.io/rzp/8YArIBS",
+      "paymentLinkId": "plink_TYMaaYTN9o4usE",
+      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=165&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20Malabar%20Dum%20Biryani&tr=plink_TYMaaYTN9o4usE",
+      "whatsappMessage": "Hey Ananya! 👋 Your Malabar Dum Biryani is calling! 🍛 Looks like UPI timed out earlier. Good news: Your fresh meal is reserved in the kitchen! Complete in 1-click and get ₹15 OFF. ✨ Don't miss your dinner treat! Tap here: [Link]\n\n👉 Pay Now: https://rzp.io/rzp/8YArIBS\n*(Valid for 20 mins · Razorpay UPI)*",
+      "status": "dispatched"
+    },
+    {
+      "id": "rec-1788613011793",
+      "timestamp": "2026-09-05T12:56:58.583Z",
+      "orderId": "ord_018583",
+      "customer": {
+        "name": "Karthik V (EEE '26)",
+        "contact": "+919847334455"
+      },
+      "items": [
+        {
+          "id": "item-4",
+          "name": "Kerala Porotta & Roast",
+          "price": 110,
+          "quantity": 1
         },
         {
           "id": "item-5",
           "name": "Cold Coffee & Choco Drizzle",
           "price": 70,
           "quantity": 1
-        },
-        {
-          "id": "item-7",
-          "name": "South Indian Canteen Meals",
-          "category": "Main Course",
-          "price": 90,
-          "available": true,
-          "prepTime": "2 mins",
-          "tag": "Wholesome",
-          "description": "Steaming boiled rice, sambar, thoran, pulissery, pickle, and crisp papadam.",
-          "quantity": 1
         }
       ],
-      "originalAmount": 420,
-      "discountAmount": 0,
-      "recoveredAmount": 420,
-      "reasoning": "Anti-Gaming Guardrail: Student already claimed a recovery perk in the last 12 hours. Cash discount restricted to prevent moral hazard; Priority Pickup token assigned. The total cart value of ₹420 clearly falls into the high-value category (>₹150), prompting the 'Fresh meal reserved in kitchen!' hook. The items (Shawarma, Meals) are substantial and would be prepared fresh. The 'priority_pickup' incentive is woven into the WhatsApp message to enhance conversion by offering quick pick-up, addressing the student's desire for convenience. The message is under 50 words, warm, uses emojis, and directly addresses the UPI payment failure, encouraging a quick resolution. Current time (3:36 PM) is still within active canteen hours, making immediate recovery highly relevant.",
+      "originalAmount": 180,
+      "discountAmount": 15,
+      "recoveredAmount": 165,
+      "reasoning": "Dynamic Micro-Discount: ₹15 (capped at 10% / ₹15 max ceiling to guarantee positive canteen contribution margin). The customer's cart value is ₹180, exceeding the ₹150 threshold for a high-value order, triggering the 'Fresh meal reserved' hook. The order includes a main meal item (Porotta & Roast). A discount of ₹15 OFF has been assigned. The payment was dismissed, indicating an interrupted transaction rather than a clear cancellation. The current time is within Canteen Hours, making recovery viable despite the time lapse. The WhatsApp message is crafted to be punchy, warm, and highlight the convenience and discount.",
       "headline": "Fresh meal reserved in kitchen! Complete in 1-click",
-      "incentiveType": "priority_pickup",
+      "incentiveType": "discount",
       "urgencyScore": 7,
-      "paymentLinkUrl": "https://rzp.io/rzp/LeZlvlok",
-      "paymentLinkId": "plink_TYJgEtRHh28OpC",
-      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=420&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20MEC%20Special%20Chicken&tr=plink_TYJgEtRHh28OpC",
-      "whatsappMessage": "Hey Rahul! 👋 Your MEC Shawarma, Meals & Coffee are waiting! Looks like your UPI hit a snag. No worries, we've reserved your fresh order! Finish your payment in 1-click & grab it from the express counter. Don't miss out! 🚀\n\n👉 Pay Now: https://rzp.io/rzp/LeZlvlok\n*(Valid for 20 mins · Razorpay UPI)*",
-      "status": "dispatched",
-      "antiGamingEnforced": true
+      "antiGamingEnforced": false,
+      "aiMeta": {
+        "aiModelUsed": "gemini-2.5-flash",
+        "aiProvider": "Google DeepMind",
+        "aiLatencyMs": 6133,
+        "fallbackUsed": false
+      },
+      "paymentLinkUrl": "https://rzp.io/rzp/oKPwh9r2",
+      "paymentLinkId": "plink_TYMaRHWygflJRZ",
+      "upiIntentUri": "upi://pay?pa=razorpay@icici&pn=Govt%20Model%20Engineering%20College%20Canteen&am=165&cu=INR&tn=MEC%20Canteen%20MEC-Eatz%20Recovery%3A%20Kerala%20Porotta%20%26%20Ro&tr=plink_TYMaRHWygflJRZ",
+      "whatsappMessage": "Hey Karthik (EEE '26)! 👋 Your Kerala Porotta & Roast is waiting! We've reserved your fresh meal in the kitchen. Complete in 1-click & get ₹15 OFF your order. Don't miss out! 😋⏳\n\n👉 Pay Now: https://rzp.io/rzp/oKPwh9r2\n*(Valid for 20 mins · Razorpay UPI)*",
+      "status": "dispatched"
     },
     {
       "id": "rec-101",
-      "timestamp": "2026-09-04T23:58:42.872Z",
+      "timestamp": "2026-09-05T12:32:51.777Z",
       "orderId": "ord_178856001",
       "customer": {
         "name": "Rahul Nair (EC 2026)",
@@ -246,13 +336,11 @@
       "paymentLinkId": "plink_TY8vqUOfoBf8Zn",
       "whatsappMessage": "Hey Rahul! 👋 Your MEC Special Chicken Shawarma & Cold Coffee were reserved. We applied a ₹15 discount to help you skip the queue!\n\n👉 Pay Now: https://rzp.io/rzp/wG5JdKG",
       "status": "recovered",
-      "paidAt": "2026-09-05T11:15:09.970Z",
-      "paymentId": "pay_test_live_001",
-      "paidMethod": "upi"
+      "paidAt": "2026-09-05T12:36:51.777Z"
     },
     {
       "id": "rec-102",
-      "timestamp": "2026-09-05T00:11:42.872Z",
+      "timestamp": "2026-09-05T12:45:51.778Z",
       "orderId": "ord_178856002",
       "customer": {
         "name": "Sneha Rao (CS 2025)",
@@ -280,76 +368,44 @@
   ],
   "webhooks": [
     {
-      "id": "wh-1788606909971",
-      "timestamp": "2026-09-05T11:15:09.971Z",
-      "event": "payment_link.paid",
-      "payload": {
-        "payment_link": {
-          "entity": {
-            "id": "plink_TY8vqUOfoBf8Zn",
-            "amount": 18500,
-            "status": "paid",
-            "notes": {
-              "orderId": "ord_178856001",
-              "recoveryId": "rec-101"
-            }
-          }
-        },
-        "payment": {
-          "entity": {
-            "id": "pay_test_live_001",
-            "method": "upi",
-            "status": "captured"
-          }
-        }
-      },
-      "signatureVerified": false,
-      "loopClosed": true,
-      "recoveredOrderId": "ord_178856001"
-    },
-    {
-      "id": "wh-1788606905798",
-      "timestamp": "2026-09-05T11:15:05.798Z",
-      "event": "payment_link.paid",
-      "payload": {
-        "payment_link": {
-          "entity": {
-            "id": "plink_TY8vqUOfoBf8Zn",
-            "amount": 18500,
-            "status": "paid",
-            "notes": {
-              "orderId": "ord_178856001",
-              "recoveryId": "rec-101"
-            }
-          }
-        },
-        "payment": {
-          "entity": {
-            "id": "pay_test_live_001",
-            "method": "upi",
-            "status": "captured"
-          }
-        }
-      },
-      "signatureVerified": false,
-      "loopClosed": true,
-      "recoveredOrderId": "ord_178856001"
-    },
-    {
-      "id": "wh-1788602783738",
-      "timestamp": "2026-09-05T10:06:23.738Z",
+      "id": "wh-1788613033006",
+      "timestamp": "2026-09-05T12:57:13.006Z",
       "event": "ai.recovery.dispatched",
       "payload": {
-        "recoveryId": "rec-1788602783729",
-        "amount": 420,
-        "paymentLinkId": "plink_TYJgEtRHh28OpC",
-        "discountApplied": 0,
-        "antiGamingPassed": false
+        "recoveryId": "rec-1788613027121",
+        "amount": 117,
+        "paymentLinkId": "plink_TYMah2jdnDlwTA",
+        "discountApplied": 13,
+        "antiGamingPassed": true
+      }
+    },
+    {
+      "id": "wh-1788613027120",
+      "timestamp": "2026-09-05T12:57:07.120Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788613018586",
+        "amount": 165,
+        "paymentLinkId": "plink_TYMaaYTN9o4usE",
+        "discountApplied": 15,
+        "antiGamingPassed": true
+      }
+    },
+    {
+      "id": "wh-1788613018585",
+      "timestamp": "2026-09-05T12:56:58.585Z",
+      "event": "ai.recovery.dispatched",
+      "payload": {
+        "recoveryId": "rec-1788613011793",
+        "amount": 165,
+        "paymentLinkId": "plink_TYMaRHWygflJRZ",
+        "discountApplied": 15,
+        "antiGamingPassed": true
       }
     },
     {
       "id": "wh-101",
-      "timestamp": "2026-09-05T00:02:42.872Z",
+      "timestamp": "2026-09-05T12:36:51.778Z",
       "event": "payment_link.paid",
       "payload": {
         "paymentLinkId": "plink_TY8vqUOfoBf8Zn",
@@ -359,7 +415,7 @@
     },
     {
       "id": "wh-102",
-      "timestamp": "2026-09-05T00:11:42.872Z",
+      "timestamp": "2026-09-05T12:45:51.778Z",
       "event": "ai.recovery.dispatched",
       "payload": {
         "recoveryId": "rec-102",
@@ -369,11 +425,11 @@
     }
   ],
   "analytics": {
-    "totalOrders": 3,
+    "totalOrders": 5,
     "recoveredOrders": 1,
     "recoveredRevenue": 200,
-    "abandonedRevenue": 580,
-    "recoveryRate": 33.3
+    "abandonedRevenue": 650,
+    "recoveryRate": 20
   },
   "kitchen": {
     "activeRushHour": true,

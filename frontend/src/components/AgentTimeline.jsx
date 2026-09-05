@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Bot, Sparkles, CheckCircle2, ArrowUpRight, MessageSquare, QrCode, Smartphone } from 'lucide-react';
 import { WhatsAppModal } from './WhatsAppModal.jsx';
 
-export function AgentTimeline({ logs, webhooks, onSimulatePayment, onResetDemo }) {
+export function AgentTimeline({ logs, webhooks, onSimulatePayment, onResetDemo, onLoadBenchmark }) {
   const [payingId, setPayingId] = useState(null);
   const [selectedWhatsApp, setSelectedWhatsApp] = useState(null);
   const [activeQrId, setActiveQrId] = useState(null);
@@ -33,18 +33,29 @@ export function AgentTimeline({ logs, webhooks, onSimulatePayment, onResetDemo }
               <span className="text-[var(--ink-soft)]">
                 This dashboard streams students whose canteen checkouts dropped or timed out today.
                 The AI autonomously analyzes each order, creates a personalized Razorpay Payment Link, and dispatches it.
-                Try clicking <b>"Simulate Payment Failure"</b> in the cart or <b>"⚡ Auto-Pilot Recovery"</b> above to watch your own order appear here in real time!
+                Try dismissing the Razorpay modal, clicking <b>"🧪 Demo: Force Cart Drop"</b> in the cart or <b>"⚡ Auto-Pilot Recovery"</b> above to watch your own order appear here in real time!
               </span>
             </div>
-            {onResetDemo && (
-              <button
-                onClick={onResetDemo}
-                className="comic-btn text-xs py-1 px-3 bg-[var(--paper)] shrink-0 ml-auto"
-                title="Reset the live stream to clean baseline orders for demo recording"
-              >
-                🧹 Reset Demo
-              </button>
-            )}
+            <div className="flex items-center gap-2 shrink-0 ml-auto">
+              {onLoadBenchmark && (
+                <button
+                  onClick={onLoadBenchmark}
+                  className="comic-btn text-xs py-1 px-3 bg-[var(--pop-yellow)] shrink-0 hover:brightness-105"
+                  title="Load 3 realistic peak-rush dropped orders to test batch recovery"
+                >
+                  🧪 Load Benchmark Cohort (3 Orders)
+                </button>
+              )}
+              {onResetDemo && (
+                <button
+                  onClick={onResetDemo}
+                  className="comic-btn text-xs py-1 px-3 bg-[var(--paper)] shrink-0"
+                  title="Reset the live stream to clean baseline orders for demo recording"
+                >
+                  🧹 Reset Demo
+                </button>
+              )}
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2">

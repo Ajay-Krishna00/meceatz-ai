@@ -312,12 +312,16 @@ router.post("/webhooks/razorpay", (req, res) => {
   const signature = req.headers["x-razorpay-signature"];
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
+  let signatureVerified = false;
   if (signature && secret && !secret.includes("your_webhook_secret")) {
-    const isValid = razorpayService.verifyWebhookSignature(req.rawBody, signature, secret);
-    if (!isValid) {
+    signatureVerified = razorpayService.verifyWebhookSignature(req.rawBody, signature, secret);
+    if (!signatureVerified) {
       console.warn("⚠️ UNAUTHORIZED WEBHOOK: Invalid signature rejected!");
       return res.status(401).json({ error: "Invalid cryptographic signature" });
     }
+  } else {
+    console.log("ℹ️ [DEV MODE] Webhook signature verification bypassed (No RAZORPAY_WEBHOOK_SECRET set or testing locally)");
+    signatureVerified = Boolean(signature);
   }
 
   const event = req.body;
@@ -389,7 +393,7 @@ router.post("/webhooks/razorpay", (req, res) => {
   db.addWebhook({
     event: eventType || "razorpay.verified_event",
     payload: event?.payload || event || {},
-    signatureVerified: Boolean(signature),
+    signatureVerified: Boolean(signatureVerified),
     loopClosed: Boolean(recoveryUpdated || orderUpdated),
     recoveredOrderId: recoveryUpdated?.orderId || orderUpdated?.id || null
   });

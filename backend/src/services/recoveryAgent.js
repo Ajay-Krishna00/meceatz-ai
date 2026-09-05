@@ -29,7 +29,10 @@ When a student abandons their food order or experiences a payment failure (UPI t
 }`;
 
 export async function processAbandonedCart(orderData) {
-  const { items, totalAmount, customer, dropReason = "checkout_abandoned", orderId } = orderData;
+  const { customer, dropReason = "checkout_abandoned", orderId } = orderData;
+  const items = orderData.items || [];
+  const totalAmount = Number(orderData.totalAmount ?? orderData.amount ?? 0);
+  const recoveryId = "rec-" + Date.now();
   const safeName = sanitizeInput(customer?.name || "Student", 40);
   const safeContact = sanitizeInput(customer?.contact || "+919847123456", 15);
   const safeDropReason = sanitizeInput(dropReason, 50);
@@ -129,7 +132,7 @@ Current Time: ${new Date().toLocaleTimeString()} (College Canteen Hours)`;
   const formattedNotification = `${finalMessage}\n\n👉 Pay Now: ${paymentUrl}\n*(Valid for 20 mins · Razorpay UPI)*`;
 
   const recoveryLog = {
-    id: "rec-" + Date.now(),
+    id: recoveryId,
     timestamp: new Date().toISOString(),
     orderId: orderId || "ord_" + Date.now().toString().slice(-6),
     customer: { name: safeName, contact: safeContact },
@@ -141,6 +144,7 @@ Current Time: ${new Date().toLocaleTimeString()} (College Canteen Hours)`;
     headline: finalHeadline,
     incentiveType,
     urgencyScore: decision?.urgencyScore || 85,
+    antiGamingEnforced: isAbuseRisk,
     aiMeta: decision?._aiMeta || { aiModelUsed: "heuristic-fallback", aiProvider: "local", aiLatencyMs: 0, fallbackUsed: true },
     paymentLinkUrl: paymentUrl,
     paymentLinkId: paymentLink.id,
